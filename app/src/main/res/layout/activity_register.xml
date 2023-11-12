@@ -48,6 +48,8 @@
         android:id="@+id/userTypeSwitch"
         android:layout_width="400dp"
         android:layout_height="48dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
         android:minHeight="48dp"
         android:text="@string/register_as_teacher"
         app:layout_constraintEnd_toEndOf="parent"

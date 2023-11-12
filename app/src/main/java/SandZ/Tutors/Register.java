@@ -18,6 +18,11 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Register extends AppCompatActivity {
     private TextInputEditText editTextEmail, editTextPassword;
@@ -25,6 +30,7 @@ public class Register extends AppCompatActivity {
     private Button btnRegister;
     private FirebaseAuth mAuth;
     private TextView switchToLogin;
+    private FirebaseFirestore mDatabase;
 
     @Override
     public void onStart() {
@@ -42,6 +48,7 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseFirestore.getInstance();
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
         userTypeSwitch = findViewById(R.id.userTypeSwitch);
@@ -67,12 +74,39 @@ public class Register extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
+//
+//                                    Toast.makeText(Register.this, "Account created.",
+//                                            Toast.LENGTH_SHORT).show();
+//                                    Intent intent = new Intent(getApplicationContext(), Login.class);
+//                                    startActivity(intent);
+//                                    finish();
 
-                                    Toast.makeText(Register.this, "Account created.",
-                                            Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(), Login.class);
-                                    startActivity(intent);
-                                    finish();
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    if (user != null) {
+                                        // Create a user object with additional details
+                                        Map<String, Object> userData = new HashMap<>();
+                                        userData.put("email", email);
+                                        userData.put("userType", userTypeSwitch.isChecked() ? "teacher" : "student");
+
+                                        // Store the user in Firestore
+                                        mDatabase.collection("users").document(user.getUid())
+                                                .set(userData, SetOptions.merge())
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            Toast.makeText(Register.this, "Account created and user information added to Firestore.", Toast.LENGTH_SHORT).show();
+                                                            Intent intent = new Intent(getApplicationContext(), Login.class);
+                                                            startActivity(intent);
+                                                            finish();
+                                                        } else {
+                                                            Toast.makeText(Register.this, "Account created, but failed to add user information to Firestore.", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                });
+                                    } else {
+                                        Toast.makeText(Register.this, "User is null.", Toast.LENGTH_SHORT).show();
+                                    }
                                 } else {
                                     Toast.makeText(Register.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();

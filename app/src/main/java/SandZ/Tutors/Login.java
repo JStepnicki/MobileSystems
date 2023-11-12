@@ -17,17 +17,19 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Login extends AppCompatActivity {
     private Button btnLogin;
     private TextInputEditText editTextEmail, editTextPassword;
     private FirebaseAuth mAuth;
     private TextView switchToRegister;
+//    private FirebaseFirestore mDatabase;
 
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
+        // Check if user is signed in (non-null) and update UI accordingly
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -40,6 +42,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
+//        mDatabase = FirebaseFirestore.getInstance(); niepotrzebne na razie
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
         switchToRegister = findViewById(R.id.go_register);
