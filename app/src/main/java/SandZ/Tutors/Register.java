@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Register extends AppCompatActivity {
-    private TextInputEditText editTextEmail, editTextPassword;
+    private TextInputEditText editTextEmail, editTextPassword, editTextName, editTextSurname;
     private Switch userTypeSwitch;
     private Button btnRegister;
     private FirebaseAuth mAuth;
@@ -52,21 +52,32 @@ public class Register extends AppCompatActivity {
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
         userTypeSwitch = findViewById(R.id.userTypeSwitch);
-
+        editTextName = findViewById(R.id.name);
+        editTextSurname = findViewById(R.id.surname);
         btnRegister = findViewById(R.id.btn_register);
         switchToLogin = findViewById(R.id.go_login);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email, password;
+                String email, password, name, surname;
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText());
+                name = String.valueOf(editTextName.getText());
+                surname = String.valueOf(editTextSurname.getText());
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(Register.this, "Enter email", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (TextUtils.isEmpty(password)) {
                     Toast.makeText(Register.this, "Enter password", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(name)) {
+                    Toast.makeText(Register.this, "Enter name", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(surname)) {
+                    Toast.makeText(Register.this, "Enter surname", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 mAuth.createUserWithEmailAndPassword(email, password)
@@ -86,6 +97,8 @@ public class Register extends AppCompatActivity {
                                         // Create a user object with additional details
                                         Map<String, Object> userData = new HashMap<>();
                                         userData.put("email", email);
+                                        userData.put("name", name);
+                                        userData.put("surname", surname);
                                         userData.put("userType", userTypeSwitch.isChecked() ? "teacher" : "student");
 
                                         // Store the user in Firestore
