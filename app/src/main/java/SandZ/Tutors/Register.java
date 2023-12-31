@@ -23,6 +23,7 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
 
 public class Register extends AppCompatActivity {
     private TextInputEditText editTextEmail, editTextPassword, editTextName, editTextSurname;
@@ -85,13 +86,6 @@ public class Register extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-//
-//                                    Toast.makeText(Register.this, "Account created.",
-//                                            Toast.LENGTH_SHORT).show();
-//                                    Intent intent = new Intent(getApplicationContext(), Login.class);
-//                                    startActivity(intent);
-//                                    finish();
-
                                     FirebaseUser user = mAuth.getCurrentUser();
                                     if (user != null) {
                                         // Create a user object with additional details
@@ -108,10 +102,46 @@ public class Register extends AppCompatActivity {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if (task.isSuccessful()) {
-                                                            Toast.makeText(Register.this, "Account created and user information added to Firestore.", Toast.LENGTH_SHORT).show();
-                                                            Intent intent = new Intent(getApplicationContext(), Login.class);
-                                                            startActivity(intent);
-                                                            finish();
+                                                            // Create a "meetings" collection for the user
+                                                            mDatabase.collection("users").document(user.getUid())
+                                                                    .collection("meetings").document("placeholder")
+                                                                    .set(new HashMap<>()); // Placeholder document
+
+                                                            if (userTypeSwitch.isChecked()) {
+                                                                // Additional fields for teachers
+                                                                Map<String, Object> teacherData = new HashMap<>();
+                                                                teacherData.put("link", ""); // Initialize with an empty link
+                                                                teacherData.put("subjects", new ArrayList<>());
+                                                                teacherData.put("grades", new ArrayList<>());
+
+                                                                // Update the teacher information in Firestore
+                                                                mDatabase.collection("users").document(user.getUid())
+                                                                        .set(teacherData, SetOptions.merge())
+                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                                if (task.isSuccessful()) {
+                                                                                    // Create a "terms" collection for teachers
+                                                                                    mDatabase.collection("users").document(user.getUid())
+                                                                                            .collection("terms").document("placeholder")
+                                                                                            .set(new HashMap<>()); // Placeholder document for terms
+
+                                                                                    Toast.makeText(Register.this, "Account created and user information added to Firestore.", Toast.LENGTH_SHORT).show();
+                                                                                    Intent intent = new Intent(getApplicationContext(), Login.class);
+                                                                                    startActivity(intent);
+                                                                                    finish();
+                                                                                } else {
+                                                                                    Toast.makeText(Register.this, "Account created, but failed to add teacher information to Firestore.", Toast.LENGTH_SHORT).show();
+                                                                                }
+                                                                            }
+                                                                        });
+                                                            } else {
+                                                                // Student registration
+                                                                Toast.makeText(Register.this, "Account created and user information added to Firestore.", Toast.LENGTH_SHORT).show();
+                                                                Intent intent = new Intent(getApplicationContext(), Login.class);
+                                                                startActivity(intent);
+                                                                finish();
+                                                            }
                                                         } else {
                                                             Toast.makeText(Register.this, "Account created, but failed to add user information to Firestore.", Toast.LENGTH_SHORT).show();
                                                         }
