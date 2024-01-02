@@ -45,6 +45,16 @@ public class Student extends AppCompatActivity {
                 finish();
             }
         });
+
+        btnMeetings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getApplicationContext(), Meetings.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         if (user == null) {
             Intent intent = new Intent(getApplicationContext(), Login.class);
             startActivity(intent);
