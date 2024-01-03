@@ -48,7 +48,7 @@ private void getUserTypeFromFirebase(String userId) {
                                     Intent intent = new Intent(getApplicationContext(), Student.class);
                                     startActivity(intent);
                                 } else if ("teacher".equals(userType)) {
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    Intent intent = new Intent(getApplicationContext(), Teacher.class);
                                     startActivity(intent);
                                 } else {
                                     // Handle other user types or show an error message

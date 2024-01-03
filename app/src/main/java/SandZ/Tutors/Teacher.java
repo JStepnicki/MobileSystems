@@ -19,7 +19,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class MainActivity extends AppCompatActivity {
+public class Teacher extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     Button btnLogout;
@@ -68,10 +68,10 @@ public class MainActivity extends AppCompatActivity {
                             email.setText(userEmail);
                             userType.setText(userUserType);
                         } else {
-                            Toast.makeText(MainActivity.this, "No such document.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Teacher.this, "No such document.", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(MainActivity.this, "Failed to fetch user data.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Teacher.this, "Failed to fetch user data.", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
