@@ -22,21 +22,21 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class Teacher extends AppCompatActivity {
 
     FirebaseAuth mAuth;
-    Button btnLogout;
+    Button btnLogout, btnTeacherMeetings;
     TextView email, userType;
     FirebaseUser user;
+    private FirebaseManager manager;
     private FirebaseFirestore mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        FirebaseApp.initializeApp(this);
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseFirestore.getInstance();
+        setContentView(R.layout.activity_teacher);
+        manager = new FirebaseManager(this);
         btnLogout = findViewById(R.id.btn_logout);
+        btnTeacherMeetings = findViewById(R.id.btn_teacher_meetings);
         email = findViewById(R.id.user_email);
         userType = findViewById(R.id.user_type);
-        user = mAuth.getCurrentUser();
+        user = manager.getCurrentUser();
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,37 +46,31 @@ public class Teacher extends AppCompatActivity {
                 finish();
             }
         });
+        btnTeacherMeetings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Meetings.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         if (user == null) {
             Intent intent = new Intent(getApplicationContext(), Login.class);
             startActivity(intent);
             finish();
         } else {
-            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DocumentReference userRef = mDatabase.collection("users").document(userId);
-            // Fetch the document
-            userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            manager.getUserData("email", new OnDataRetrievedListener() {
                 @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            // Retrieve email and userType from the document
-                            String userEmail = document.getString("email");
-                            String userUserType = document.getString("userType");
-
-                            // Display the data in your TextViews or wherever you need it
-                            email.setText(userEmail);
-                            userType.setText(userUserType);
-                        } else {
-                            Toast.makeText(Teacher.this, "No such document.", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(Teacher.this, "Failed to fetch user data.", Toast.LENGTH_SHORT).show();
-                    }
+                public void onDataRetrieved(String data) {
+                    email.setText(data);
                 }
             });
-            email.setText(user.getEmail());
-            userType.setText(user.getDisplayName());
+            manager.getUserData("userType", new OnDataRetrievedListener() {
+                @Override
+                public void onDataRetrieved(String data) {
+                    userType.setText(data);
+                }
+            });
         }
 
     }
