@@ -7,16 +7,21 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.auth.AuthResult;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -145,6 +150,34 @@ public class FirebaseManager {
                         } else {
                             Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
+                    }
+                });
+    }
+
+    public void getMeetingsForCurrentUser(OnSuccessListener<ArrayList<Meeting>> successListener, OnFailureListener failureListener) {
+        ArrayList<Meeting> meetings_objects = new ArrayList<>();
+
+        db.collection("users").document(user.getUid()).collection("meetings")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            Date startDate = document.getDate("date");
+                            Date endDate = document.getDate("endDate");
+                            String link = document.getString("link");
+                            String student = document.getString("student");
+                            String teacher = document.getString("teacher");
+                            Meeting spotkanie = new Meeting(startDate, endDate, link, student, teacher);
+                            meetings_objects.add(spotkanie);
+                        }
+                        successListener.onSuccess(meetings_objects);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        failureListener.onFailure(e);
                     }
                 });
     }
