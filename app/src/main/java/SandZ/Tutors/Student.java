@@ -20,26 +20,26 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Student extends AppCompatActivity {
-    FirebaseAuth mAuth;
     Button btnLogout, btnMeetings;
     TextView name;
     FirebaseUser user;
-    private FirebaseFirestore mDatabase;
+    private FirebaseManager manager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
+        manager = new FirebaseManager(this);
         FirebaseApp.initializeApp(this);
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseFirestore.getInstance();
         btnLogout = findViewById(R.id.btn_logout_student);
         btnMeetings = findViewById(R.id.btn_meetings);
         name = findViewById(R.id.user_name_student);
-        user = mAuth.getCurrentUser();
+        user = manager.getCurrentUser();
+
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
+                manager.signOut();
                 Intent intent = new Intent(getApplicationContext(), Login.class);
                 startActivity(intent);
                 finish();
@@ -54,34 +54,19 @@ public class Student extends AppCompatActivity {
                 finish();
             }
         });
+
         if (user == null) {
             Intent intent = new Intent(getApplicationContext(), Login.class);
             startActivity(intent);
             finish();
-        } else {
-            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DocumentReference userRef = mDatabase.collection("users").document(userId);
-            // Fetch the document
-            userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            // Retrieve email and userType from the document
-                            String userName = document.getString("name");
-
-                            // Display the data in your TextViews or wherever you need it
-                            name.setText(userName);
-                        } else {
-                            Toast.makeText(Student.this, "No such document.", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(Student.this, "Failed to fetch user data.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-            name.setText("Welcome" + user.getEmail()+ " !");
         }
+        manager.getUserData("name", new OnDataRetrievedListener() {
+            @Override
+            public void onDataRetrieved(String data) {
+                name.setText(data);
+            }
+        });
+
+
     }
 }

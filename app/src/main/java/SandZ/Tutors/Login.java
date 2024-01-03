@@ -22,10 +22,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Login extends AppCompatActivity {
     private Button btnLogin;
+    private FirebaseManager manager;
     private TextInputEditText editTextEmail, editTextPassword;
     private FirebaseAuth mAuth;
     private TextView switchToRegister;
-//    private FirebaseFirestore mDatabase;
+
 private void getUserTypeFromFirebase(String userId) {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 

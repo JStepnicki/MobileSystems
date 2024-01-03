@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 public class Meetings extends AppCompatActivity {
     private FirebaseUser user;
+    private FirebaseManager manager;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private ArrayList<String> meetingList = new ArrayList<>();
