@@ -11,9 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
+
 
 
 import java.util.ArrayList;
@@ -26,7 +24,6 @@ public class Meetings extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_meetings);
         manager = new FirebaseManager(this);
         manager.getMeetingsForCurrentUser(successListener, failureListener);
