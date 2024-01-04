@@ -25,9 +25,12 @@ public class Term {
     }
 
     public boolean checkDate(int year, int month, int day) {
-        int termYear = timestamp.toDate().getYear() + 1900;
-        int termMonth = timestamp.toDate().getMonth();
-        int termDay = timestamp.toDate().getDay();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timestamp.toDate().getTime());
+
+        int termYear = calendar.get(Calendar.YEAR);
+        int termMonth = calendar.get(Calendar.MONTH);
+        int termDay = calendar.get(Calendar.DAY_OF_MONTH);
         return termYear == year && termMonth == month && termDay == day;
     }
 

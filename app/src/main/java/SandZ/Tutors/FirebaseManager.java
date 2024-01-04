@@ -197,5 +197,26 @@ public class FirebaseManager {
                     }
                 });
     }
+
+    public void addTermToFirebase(String userID, Timestamp timestamp, boolean isBooked) {
+        Map<String, Object> termData = new HashMap<>();
+        termData.put("date", timestamp);
+        termData.put("isBooked", isBooked);
+
+        db.collection("users").document(userID).collection("terms")
+                .add(termData)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(context, "Dodano termin", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context,"Błąd: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 }
 
