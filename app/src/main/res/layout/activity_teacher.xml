@@ -52,10 +52,21 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="149dp"
         android:layout_marginEnd="132dp"
-        android:layout_marginBottom="239dp"
+        android:layout_marginBottom="160dp"
         android:text="my Meetings"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/teacher_terms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="168dp"
+        android:layout_marginBottom="73dp"
+        android:text="my terms"
+        app:layout_constraintBottom_toTopOf="@+id/btn_teacher_meetings"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

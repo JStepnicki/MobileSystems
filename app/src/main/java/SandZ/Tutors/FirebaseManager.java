@@ -10,6 +10,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -49,6 +50,7 @@ public class FirebaseManager {
     public FirebaseUser getCurrentUser() {
         return user;
     }
+
 
     public void getUserData(String fieldName, OnDataRetrievedListener listener) {
         FirebaseUser user = mAuth.getCurrentUser();
@@ -99,11 +101,6 @@ public class FirebaseManager {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
-                                                    // Create a "meetings" collection for the user
-                                                    db.collection("users").document(user.getUid())
-                                                            .collection("meetings").document("placeholder")
-                                                            .set(new HashMap<>()); // Placeholder document
-
                                                     if (isTeacher) {
                                                         // Additional fields for teachers
                                                         Map<String, Object> teacherData = new HashMap<>();
@@ -118,11 +115,6 @@ public class FirebaseManager {
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<Void> task) {
                                                                         if (task.isSuccessful()) {
-                                                                            // Create a "terms" collection for teachers
-                                                                            db.collection("users").document(user.getUid())
-                                                                                    .collection("terms").document("placeholder")
-                                                                                    .set(new HashMap<>()); // Placeholder document for terms
-
                                                                             Toast.makeText(context, "Account created and user information added to Firestore.", Toast.LENGTH_SHORT).show();
                                                                             Intent intent = new Intent(context, Login.class);
                                                                             context.startActivity(intent);
@@ -178,6 +170,30 @@ public class FirebaseManager {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         failureListener.onFailure(e);
+                    }
+                });
+    }
+    public void getTermsForTeacher(String userID, OnSuccessListener<ArrayList<Term>> successListener, OnFailureListener failureListener) {
+        ArrayList<Term> terms_objects = new ArrayList<>();
+
+        db.collection("users").document(userID).collection("terms")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for(QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            com.google.firebase.Timestamp timestamp = document.getTimestamp("date");
+                            boolean isBooked = document.getBoolean("isBooked");
+                            Term term = new Term(timestamp, isBooked);
+                            terms_objects.add(term);
+                        }
+                        successListener.onSuccess(terms_objects);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context,"Błąd: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
