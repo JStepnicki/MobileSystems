@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 
 public class Student extends AppCompatActivity {
-    Button btnLogout, btnMeetings;
+    Button btnLogout, btnMeetings, btnSearch;
     TextView name;
     FirebaseUser user;
     private FirebaseManager manager;
@@ -25,6 +25,7 @@ public class Student extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         btnLogout = findViewById(R.id.btn_logout_student);
         btnMeetings = findViewById(R.id.btn_meetings);
+        btnSearch = findViewById(R.id.go_to_search);
         name = findViewById(R.id.user_name_student);
         user = manager.getCurrentUser();
 
@@ -42,6 +43,14 @@ public class Student extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Meetings.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SearchForTutor.class);
                 startActivity(intent);
                 finish();
             }

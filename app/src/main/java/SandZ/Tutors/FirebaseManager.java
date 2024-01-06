@@ -103,9 +103,9 @@ public class FirebaseManager {
                                                     if (isTeacher) {
                                                         // Additional fields for teachers
                                                         Map<String, Object> teacherData = new HashMap<>();
-                                                        teacherData.put("link", ""); // Initialize with an empty link
+                                                        teacherData.put("link", "");
                                                         teacherData.put("subjects", new ArrayList<>());
-                                                        teacherData.put("grades", new ArrayList<>());
+                                                        teacherData.put("rates", new ArrayList<>());
 
                                                         // Update the teacher information in Firestore
                                                         db.collection("users").document(user.getUid())
@@ -237,21 +237,29 @@ public class FirebaseManager {
     }
 
     public void getTeacherList(final TeacherListCallback callback) {
-        ArrayList<String> teachers = new ArrayList<>();
+        ArrayList<TeacherClass> teachers = new ArrayList<>();
         db.collection("users")
                 .whereEqualTo("userType", "teacher")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots){
-                        for(QueryDocumentSnapshot document : queryDocumentSnapshots){
-                            String teacher = document.getString("name") + " " + document.getString("surname");
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            String id = document.getId();
+                            String email = document.getString("email");
+                            String name = document.getString("name");
+                            String surname = document.getString("surname");
+                            List<String> subjects = (List<String>) document.get("subjects");
+                            List<Integer> rates = (List<Integer>) document.get("rates");
+
+                            TeacherClass teacher = new TeacherClass(id, email, name, surname, subjects, rates);
                             teachers.add(teacher);
                         }
                         callback.onTeacherListReceived(teachers);
                     }
                 });
     }
+
     public void updateSubjects(String userID, List<String> newSubjects, Context context) {
         // Utwórz mapę, która będzie zawierała jedynie listę nowych przedmiotów
         Map<String, Object> updateMap = new HashMap<>();
