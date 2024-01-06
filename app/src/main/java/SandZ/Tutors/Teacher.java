@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Teacher extends AppCompatActivity {
 
-    Button btnLogout, btnTeacherMeetings, btnTerms;
+    Button btnLogout, btnTeacherMeetings, btnTerms, btnTeacherSubjects;
     TextView email, userType;
     FirebaseUser user;
     private FirebaseManager manager;
@@ -26,6 +26,7 @@ public class Teacher extends AppCompatActivity {
         btnLogout = findViewById(R.id.btn_logout);
         btnTeacherMeetings = findViewById(R.id.btn_teacher_meetings);
         btnTerms = findViewById(R.id.teacher_terms);
+        btnTeacherSubjects = findViewById(R.id.teacher_subjects);
         email = findViewById(R.id.user_email);
         userType = findViewById(R.id.user_type);
         user = manager.getCurrentUser();
@@ -46,6 +47,13 @@ public class Teacher extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TeacherTerms.class);
+                startActivity(intent);
+            }
+        });
+        btnTeacherSubjects.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SubjectView.class);
                 startActivity(intent);
             }
         });

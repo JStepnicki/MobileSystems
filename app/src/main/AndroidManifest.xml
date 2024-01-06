@@ -15,6 +15,9 @@
         android:theme="@style/Theme.TutorApp"
         tools:targetApi="31">
         <activity
+            android:name=".SubjectView"
+            android:exported="false" />
+        <activity
             android:name=".AddTerm"
             android:exported="false" />
         <activity

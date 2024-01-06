@@ -2,7 +2,6 @@ package SandZ.Tutors;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +24,7 @@ import com.google.firebase.auth.AuthResult;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FirebaseManager {
@@ -252,8 +252,43 @@ public class FirebaseManager {
                     }
                 });
     }
-    public void addSubjectToTeacher(String userID, String subject) {
-        db.collection("users").document(userID).update("subjects", FieldValue.arrayUnion(subject));
+    public void updateSubjects(String userID, List<String> newSubjects, Context context) {
+        // Utwórz mapę, która będzie zawierała jedynie listę nowych przedmiotów
+        Map<String, Object> updateMap = new HashMap<>();
+        updateMap.put("subjects", newSubjects);
+
+        // Zaktualizuj dokument użytkownika z nową listą przedmiotów
+        db.collection("users").document(userID).set(updateMap, SetOptions.merge())
+                .addOnSuccessListener(aVoid -> {
+                    // Wyświetl Toast o sukcesie
+                    Toast.makeText(context, "Przedmioty zaktualizowane pomyślnie", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    // Obsługa błędu (jeśli coś poszło nie tak)
+                    e.printStackTrace();
+                    Toast.makeText(context, "Błąd podczas aktualizacji przedmiotów", Toast.LENGTH_SHORT).show();
+                });
     }
+
+    public void getTeacherSubjects(String teacherID, OnSuccessListener<ArrayList<String>> successListener, OnFailureListener failureListener) {
+        db.collection("users").document(teacherID).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        ArrayList<String> teacherSubjects = new ArrayList<>();
+                        if (documentSnapshot.exists()) {
+                            teacherSubjects = (ArrayList<String>) documentSnapshot.get("subjects");
+                        }
+                        successListener.onSuccess(teacherSubjects);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        failureListener.onFailure(e);
+                    }
+                });
+    }
+
 }
 

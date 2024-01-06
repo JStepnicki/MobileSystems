@@ -63,10 +63,20 @@
         android:id="@+id/teacher_terms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="168dp"
-        android:layout_marginBottom="73dp"
+        android:layout_marginEnd="140dp"
+        android:layout_marginBottom="28dp"
         android:text="my terms"
         app:layout_constraintBottom_toTopOf="@+id/btn_teacher_meetings"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/teacher_subjects"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="132dp"
+        android:layout_marginBottom="16dp"
+        android:text="my subjects"
+        app:layout_constraintBottom_toTopOf="@+id/teacher_terms"
         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
