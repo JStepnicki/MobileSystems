@@ -22,15 +22,13 @@
         android:id="@+id/addTermButton"
         android:layout_width="115dp"
         android:layout_height="67dp"
-        android:layout_marginStart="140dp"
-        android:layout_marginTop="46dp"
-        android:layout_marginEnd="140dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginStart="148dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginBottom="48dp"
         android:text="+"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timeEditText" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/dateEditText"
@@ -39,9 +37,8 @@
         android:layout_marginStart="64dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="64dp"
-        android:layout_marginBottom="18dp"
         android:autofillHints=""
-        android:hint="YYYY-MM-DD"
+        android:hint="Date: YYYY-MM-DD"
         android:minHeight="48dp"
         app:layout_constraintBottom_toTopOf="@+id/timeEditText"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,12 +50,28 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="64dp"
-        android:hint="HH:MM"
+        android:layout_marginBottom="16dp"
+        android:hint="Time: HH:MM"
         android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/linkEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dateEditText" />
+
+    <EditText
+        android:id="@+id/linkEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="64dp"
+        android:hint="Meeting link"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeEditText" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

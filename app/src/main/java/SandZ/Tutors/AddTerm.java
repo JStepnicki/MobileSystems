@@ -18,7 +18,7 @@ import java.util.Date;
 
 public class AddTerm extends AppCompatActivity {
     private FirebaseManager manager;
-    private EditText dateEditText, timeEditText;
+    private EditText dateEditText, timeEditText, linkEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +28,7 @@ public class AddTerm extends AppCompatActivity {
         CalendarView calendarView = findViewById(R.id.calendarView);
         dateEditText = findViewById(R.id.dateEditText);
         timeEditText = findViewById(R.id.timeEditText);
+        linkEditText = findViewById(R.id.linkEditText);
         Button addButton = findViewById(R.id.addTermButton);
         calendarView.setOnDateChangeListener((view, year, month, day) -> {
             String selectedDate = year + "-" + (month + 1) + "-" + day;
@@ -37,11 +38,11 @@ public class AddTerm extends AppCompatActivity {
         addButton.setOnClickListener(v -> {
             String selectedDate = dateEditText.getText().toString();
             String selectedTime = timeEditText.getText().toString();
-
+            String link = linkEditText.getText().toString();
             Timestamp timestamp = prepareTimestamp(selectedDate, selectedTime);
 
             if (timestamp != null) {
-                manager.addTermToFirebase(manager.getCurrentUser().getUid(), timestamp,false);
+                manager.addTermToFirebase(manager.getCurrentUser().getUid(), timestamp,false,link);
             } else {
                 Toast.makeText(AddTerm.this, "Invalid date or time format", Toast.LENGTH_SHORT).show();
             }

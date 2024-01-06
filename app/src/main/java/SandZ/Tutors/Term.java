@@ -11,9 +11,12 @@ public class Term {
     private Timestamp timestamp;
     private boolean isBooked;
 
-    public Term(Timestamp timestamp, boolean isBooked) {
+    private String link;
+
+    public Term(Timestamp timestamp, boolean isBooked, String link) {
         this.timestamp = timestamp;
         this.isBooked = isBooked;
+        this.link = link;
     }
 
     public String getDateString() {
@@ -66,5 +69,12 @@ public class Term {
 
     public void setBooked(boolean booked) {
         isBooked = booked;
+    }
+
+    public String getLink() {
+        return link;
+    }
+    public void setLink(String link) {
+        this.link = link;
     }
 }

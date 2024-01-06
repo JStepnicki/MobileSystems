@@ -184,7 +184,8 @@ public class FirebaseManager {
                         for(QueryDocumentSnapshot document : queryDocumentSnapshots) {
                             com.google.firebase.Timestamp timestamp = document.getTimestamp("date");
                             boolean isBooked = document.getBoolean("isBooked");
-                            Term term = new Term(timestamp, isBooked);
+                            String link = document.getString("link");
+                            Term term = new Term(timestamp, isBooked,link);
                             terms_objects.add(term);
                         }
                         successListener.onSuccess(terms_objects);
@@ -198,10 +199,11 @@ public class FirebaseManager {
                 });
     }
 
-    public void addTermToFirebase(String userID, Timestamp timestamp, boolean isBooked) {
+    public void addTermToFirebase(String userID, Timestamp timestamp, boolean isBooked, String link) {
         Map<String, Object> termData = new HashMap<>();
         termData.put("date", timestamp);
         termData.put("isBooked", isBooked);
+        termData.put("link", link);
 
         db.collection("users").document(userID).collection("terms")
                 .add(termData)
