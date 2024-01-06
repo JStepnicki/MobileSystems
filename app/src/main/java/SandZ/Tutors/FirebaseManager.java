@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -57,8 +58,6 @@ public class FirebaseManager {
 
         if (user != null) {
             DocumentReference userRef = db.collection("users").document(user.getUid());
-
-            // Fetch the document
             userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -68,15 +67,15 @@ public class FirebaseManager {
                             String data = document.getString(fieldName);
                             listener.onDataRetrieved(data != null ? data : "");
                         } else {
-                            listener.onDataRetrieved(""); // Document does not exist
+                            listener.onDataRetrieved("");
                         }
                     } else {
-                        listener.onDataRetrieved(""); // Failed to fetch data
+                        listener.onDataRetrieved("");
                     }
                 }
             });
         } else {
-            listener.onDataRetrieved(""); // User not logged in
+            listener.onDataRetrieved("");
         }
     }
     public void registerUser(String email, String password, String name, String surname, boolean isTeacher) {
@@ -194,7 +193,7 @@ public class FirebaseManager {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context,"Błąd: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,"Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -210,15 +209,51 @@ public class FirebaseManager {
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(context, "Dodano termin", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Term added", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context,"Błąd: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,"Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    public void getSubjectList(final SubjectListCallback callback) {
+        ArrayList<String> subjects = new ArrayList<>();
+        db.collection("subjects")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots){
+                        for(QueryDocumentSnapshot document : queryDocumentSnapshots){
+                            String subject = document.getId();
+                            subjects.add(subject);
+                        }
+                        callback.onSubjectListReceived(subjects);
+                    }
+                });
+    }
+
+    public void getTeacherList(final TeacherListCallback callback) {
+        ArrayList<String> teachers = new ArrayList<>();
+        db.collection("users")
+                .whereEqualTo("userType", "teacher")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots){
+                        for(QueryDocumentSnapshot document : queryDocumentSnapshots){
+                            String teacher = document.getString("name") + " " + document.getString("surname");
+                            teachers.add(teacher);
+                        }
+                        callback.onTeacherListReceived(teachers);
+                    }
+                });
+    }
+    public void addSubjectToTeacher(String userID, String subject) {
+        db.collection("users").document(userID).update("subjects", FieldValue.arrayUnion(subject));
     }
 }
 

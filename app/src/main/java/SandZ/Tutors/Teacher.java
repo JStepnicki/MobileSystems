@@ -57,6 +57,5 @@ public class Teacher extends AppCompatActivity {
             manager.getUserData("email", data -> email.setText(data));
             manager.getUserData("userType", data -> userType.setText(data));
         }
-
     }
 }
