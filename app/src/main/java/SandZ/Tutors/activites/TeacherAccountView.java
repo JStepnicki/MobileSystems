@@ -33,7 +33,7 @@ public class TeacherAccountView extends AppCompatActivity {
         teacher = (TeacherClass) receivedIntent.getExtras().get("teacher");
 
         profilePicture = findViewById(R.id.profile_picutre);
-        reserveTermButton = findViewById(R.id.reserve_term);
+        reserveTermButton = findViewById(R.id.show_terms_calendar);
         nameText = findViewById(R.id.name_text);
         surnameText = findViewById(R.id.surname_text);
         ratingBar = findViewById(R.id.ratingBar);
@@ -59,8 +59,9 @@ public class TeacherAccountView extends AppCompatActivity {
         reserveTermButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Obsługa kliknięcia przycisku "Show terms calendar"
-                // Tutaj możesz dodać odpowiednią logikę obsługi zdarzenia
+                Intent intent = new Intent(TeacherAccountView.this, ReserveTermView.class);
+                intent.putExtra("teacher", teacher);
+                startActivity(intent);
             }
         });
 

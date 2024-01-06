@@ -160,11 +160,10 @@ public class FirebaseManager {
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                             Date startDate = document.getDate("date");
-                            Date endDate = document.getDate("endDate");
                             String link = document.getString("link");
                             String student = document.getString("student");
                             String teacher = document.getString("teacher");
-                            Meeting spotkanie = new Meeting(startDate, endDate, link, student, teacher);
+                            Meeting spotkanie = new Meeting(startDate, link, student, teacher);
                             meetings_objects.add(spotkanie);
                         }
                         successListener.onSuccess(meetings_objects);
@@ -302,6 +301,39 @@ public class FirebaseManager {
                     }
                 });
     }
+
+    public void addMeetingForTeacherAndStudent(String teacherID, String studentID, Timestamp date, String link, String teacher, String student) {
+        Map<String, Object> meetingData = new HashMap<>();
+        meetingData.put("date", date);
+        meetingData.put("link", link);
+        meetingData.put("teacher", teacher);
+        meetingData.put("student", student);
+
+        addMeetingToCollection(teacherID, meetingData, "meetings");
+        addMeetingToCollection(studentID, meetingData, "meetings");
+
+        updateTermsStatus(teacherID, date);
+    }
+
+    private void addMeetingToCollection(String userID, Map<String, Object> meetingData, String collectionName) {
+        db.collection("users").document(userID).collection(collectionName)
+                .add(meetingData)
+                .addOnSuccessListener(documentReference -> {
+                    Toast.makeText(context, "Meeting added", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void updateTermsStatus(String userID, Timestamp date) {
+        db.collection("users").document(userID).collection("terms")
+                .whereEqualTo("date", date)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        document.getReference().update("isBooked", true);
+                    }
+                });
+    }
+
 
 }
 

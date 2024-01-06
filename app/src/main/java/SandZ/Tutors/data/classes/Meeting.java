@@ -4,15 +4,13 @@ import java.util.Date;
 
 public class Meeting {
     private Date date;
-    private Date endDate;
     private String link;
     private String student;
     private String teacher;
 
     // Konstruktor
-    public Meeting(Date date, Date endDate, String link, String student, String teacher) {
+    public Meeting(Date date, String link, String student, String teacher) {
         this.date = date;
-        this.endDate = endDate;
         this.link = link;
         this.student = student;
         this.teacher = teacher;
@@ -25,14 +23,6 @@ public class Meeting {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
     }
 
     public String getLink() {
@@ -63,7 +53,6 @@ public class Meeting {
     public String toString() {
         return "Meeting{" +
                 "date=" + date +
-                ", endDate=" + endDate +
                 ", link='" + link + '\'' +
                 ", student='" + student + '\'' +
                 ", teacher='" + teacher + '\'' +
