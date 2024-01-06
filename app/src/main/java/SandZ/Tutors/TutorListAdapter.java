@@ -36,7 +36,6 @@ public class TutorListAdapter extends ArrayAdapter<TeacherClass> {
         TextView priceView = convertView.findViewById(R.id.priceView);
         TextView rateView = convertView.findViewById(R.id.rateView);
 
-        // Sprawdź, czy nauczyciel nie jest nullem
         if (teacher != null) {
             imageView.setImageResource(R.mipmap.seal);
             nameView.setText(teacher.getName());

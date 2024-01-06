@@ -20,7 +20,7 @@ public class TermsView extends AppCompatActivity {
     private FirebaseManager manager;
     private ArrayList<Term> user_terms;
     private TextView date;
-    private FirebaseUser user;
+    private String teacher_id;
     private ArrayList<String> terms_hours;
     private int year, month, day;
 
@@ -31,7 +31,7 @@ public class TermsView extends AppCompatActivity {
         manager = new FirebaseManager(this);
 
         Intent receivedIntent = getIntent();
-        user = (FirebaseUser) receivedIntent.getExtras().get("user");
+        teacher_id = (String) receivedIntent.getExtras().get("teacher_id");
         year = (int) receivedIntent.getExtras().get("year");
         month = (int) receivedIntent.getExtras().get("month");
         day = (int) receivedIntent.getExtras().get("day");
@@ -40,9 +40,9 @@ public class TermsView extends AppCompatActivity {
         terms_hours = new ArrayList<>();
 
         date = findViewById(R.id.data_display);
-        date.setText("Your terms at " + year + "-" + (month + 1) + "-" + day);
+        date.setText("Available terms at " + year + "-" + (month + 1) + "-" + day);
 
-        manager.getTermsForTeacher(user.getUid(), successListener, failureListener);
+        manager.getTermsForTeacher(teacher_id, successListener, failureListener);
     }
 
     private OnSuccessListener<ArrayList<Term>> successListener = new OnSuccessListener<ArrayList<Term>>() {
@@ -52,7 +52,7 @@ public class TermsView extends AppCompatActivity {
                 terms_hours.add("No terms");
             } else {
                 for (Term term : terms) {
-                    if (term.checkDate(year, month, day)) {
+                    if (term.checkDate(year, month, day) && !(term.isBooked())) {
                         user_terms.add(term);
                         terms_hours.add(term.getTimeAsString());
                     }

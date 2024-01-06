@@ -44,7 +44,6 @@ public class Student extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Meetings.class);
                 startActivity(intent);
-                finish();
             }
         });
         btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +51,6 @@ public class Student extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SearchForTutor.class);
                 startActivity(intent);
-                finish();
             }
         });
 

@@ -1,8 +1,9 @@
 package SandZ.Tutors;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class TeacherClass {
+public class TeacherClass implements Serializable {
     private String id;
     private String email;
     private String name;
@@ -74,11 +75,15 @@ public class TeacherClass {
         this.subjects = subjects;
     }
 
-    public List<Integer> getRates() {
-        return rates;
-    }
 
-    public void setRates(List<Integer> rates) {
-        this.rates = rates;
+    public float getRating(){
+        float sum = 0;
+        for(int i = 0; i < rates.size(); i++){
+            sum += rates.get(i);
+        }
+        if(sum == 0)
+            return 0;
+        float rate = sum/rates.size();
+        return rate;
     }
 }

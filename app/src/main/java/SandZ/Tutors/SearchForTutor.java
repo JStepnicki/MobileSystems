@@ -3,10 +3,11 @@ package SandZ.Tutors;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ public class SearchForTutor extends AppCompatActivity {
     private Context context;
     private List<TeacherClass> teachers;
     private List<String> subjects;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,29 +55,40 @@ public class SearchForTutor extends AppCompatActivity {
             public void onTeacherListReceived(List<TeacherClass> receivedTeachers) {
                 adapter = new TutorListAdapter(context, receivedTeachers);
                 tutorListView.setAdapter(adapter);
+
+                // Dodaj obsługę kliknięcia na elementy listy
+                tutorListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        // Tutaj dodaj kod obsługujący kliknięcie na element
+                        TeacherClass selectedTeacher = (TeacherClass) parent.getItemAtPosition(position);
+                        if (selectedTeacher != null) {
+                            // Przykładowa akcja po kliknięciu nauczyciela
+                            Intent intent = new Intent(SearchForTutor.this, TeacherAccountView.class);
+                            intent.putExtra("teacher", selectedTeacher);
+                            startActivity(intent);
+                        }
+                    }
+                });
             }
         });
     }
 
     private void showFilterDialog() {
-        if(subjects == null)
+        if (subjects == null)
             return;
-        final List<String> filterOptions = subjects; // Zakładam, że masz metodę do pobierania dynamicznej listy opcji
+        final List<String> filterOptions = subjects;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Choose subject")
                 .setItems(filterOptions.toArray(new CharSequence[0]), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // Handle the click on individual items if needed
                         String selectedOption = filterOptions.get(i);
                         subjectButton.setText(selectedOption);
-
                     }
                 });
 
         builder.create().show();
     }
-
-
 }
