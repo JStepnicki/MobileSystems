@@ -1,5 +1,8 @@
-package SandZ.Tutors;
+package SandZ.Tutors.database_handlers;
 import java.util.List;
+
+import SandZ.Tutors.data.classes.TeacherClass;
+
 public interface TeacherListCallback {
     void onTeacherListReceived(List<TeacherClass> teachers);
 }

@@ -1,4 +1,4 @@
-package SandZ.Tutors;
+package SandZ.Tutors.database_handlers;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -27,13 +26,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import SandZ.Tutors.activites.LoginView;
+import SandZ.Tutors.activites.RegisterView;
+import SandZ.Tutors.data.classes.Meeting;
+import SandZ.Tutors.data.classes.TeacherClass;
+import SandZ.Tutors.data.classes.Term;
+
 public class FirebaseManager {
 
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
-    private Context context;
+    private final FirebaseAuth mAuth;
+    private final FirebaseFirestore db;
+    private final Context context;
 
-    private FirebaseUser user;
+    private final FirebaseUser user;
 
     public FirebaseManager(Context context) {
         this.context = context;
@@ -115,9 +120,9 @@ public class FirebaseManager {
                                                                     public void onComplete(@NonNull Task<Void> task) {
                                                                         if (task.isSuccessful()) {
                                                                             Toast.makeText(context, "Account created and user information added to Firestore.", Toast.LENGTH_SHORT).show();
-                                                                            Intent intent = new Intent(context, Login.class);
+                                                                            Intent intent = new Intent(context, LoginView.class);
                                                                             context.startActivity(intent);
-                                                                            ((Register) context).finish();
+                                                                            ((RegisterView) context).finish();
                                                                         } else {
                                                                             Toast.makeText(context, "Account created, but failed to add teacher information to Firestore.", Toast.LENGTH_SHORT).show();
                                                                         }
@@ -126,9 +131,9 @@ public class FirebaseManager {
                                                     } else {
                                                         // Student registration
                                                         Toast.makeText(context, "Account created and user information added to Firestore.", Toast.LENGTH_SHORT).show();
-                                                        Intent intent = new Intent(context, Login.class);
+                                                        Intent intent = new Intent(context, LoginView.class);
                                                         context.startActivity(intent);
-                                                        ((Register) context).finish();
+                                                        ((RegisterView) context).finish();
                                                     }
                                                 } else {
                                                     Toast.makeText(context, "Account created, but failed to add user information to Firestore.", Toast.LENGTH_SHORT).show();

@@ -1,4 +1,4 @@
-package SandZ.Tutors;
+package SandZ.Tutors.activites;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +12,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
+import SandZ.Tutors.database_handlers.FirebaseManager;
+import SandZ.Tutors.R;
 
-public class Register extends AppCompatActivity {
+
+public class RegisterView extends AppCompatActivity {
     private TextInputEditText editTextEmail, editTextPassword, editTextName, editTextSurname;
     private Switch userTypeSwitch;
     private FirebaseManager firebaseManager;
@@ -42,7 +45,7 @@ public class Register extends AppCompatActivity {
                 String surname = editTextSurname.getText().toString().trim();
 
                 if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(name) || TextUtils.isEmpty(surname)) {
-                    Toast.makeText(Register.this, "All fields are required", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterView.this, "All fields are required", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -54,7 +57,7 @@ public class Register extends AppCompatActivity {
         switchToLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Login.class);
+                Intent intent = new Intent(getApplicationContext(), LoginView.class);
                 startActivity(intent);
                 finish();
             }

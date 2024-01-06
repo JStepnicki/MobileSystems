@@ -1,4 +1,4 @@
-package SandZ.Tutors;
+package SandZ.Tutors.data.classes;
 
 import com.google.firebase.Timestamp;
 

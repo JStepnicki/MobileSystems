@@ -1,4 +1,4 @@
-package SandZ.Tutors;
+package SandZ.Tutors.activites;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +14,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import SandZ.Tutors.R;
+import SandZ.Tutors.data_adapters.SubjectAdapter;
+import SandZ.Tutors.database_handlers.FirebaseManager;
+import SandZ.Tutors.database_handlers.SubjectListCallback;
 
 public class SubjectView extends AppCompatActivity {
 

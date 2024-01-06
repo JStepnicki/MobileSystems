@@ -1,4 +1,4 @@
-package SandZ.Tutors;
+package SandZ.Tutors.activites;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -10,8 +10,12 @@ import android.widget.TextView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseUser;
 
+import SandZ.Tutors.R;
+import SandZ.Tutors.database_handlers.FirebaseManager;
+import SandZ.Tutors.database_handlers.OnDataRetrievedListener;
 
-public class Student extends AppCompatActivity {
+
+public class StudentMainView extends AppCompatActivity {
     Button btnLogout, btnMeetings, btnSearch;
     TextView name;
     FirebaseUser user;
@@ -33,7 +37,7 @@ public class Student extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 manager.signOut();
-                Intent intent = new Intent(getApplicationContext(), Login.class);
+                Intent intent = new Intent(getApplicationContext(), LoginView.class);
                 startActivity(intent);
                 finish();
             }
@@ -42,20 +46,20 @@ public class Student extends AppCompatActivity {
         btnMeetings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Meetings.class);
+                Intent intent = new Intent(getApplicationContext(), MeetingsView.class);
                 startActivity(intent);
             }
         });
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SearchForTutor.class);
+                Intent intent = new Intent(getApplicationContext(), TutorBrowserView.class);
                 startActivity(intent);
             }
         });
 
         if (user == null) {
-            Intent intent = new Intent(getApplicationContext(), Login.class);
+            Intent intent = new Intent(getApplicationContext(), LoginView.class);
             startActivity(intent);
             finish();
         }

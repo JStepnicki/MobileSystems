@@ -1,4 +1,4 @@
-package SandZ.Tutors;
+package SandZ.Tutors.data_adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,9 +12,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
+
+import SandZ.Tutors.R;
+import SandZ.Tutors.data.classes.TeacherClass;
+
 public class TutorListAdapter extends ArrayAdapter<TeacherClass> {
-    private List<TeacherClass> teacherList;
-    private String filter;
+    private final List<TeacherClass> teacherList;
+    private final String filter;
 
     public TutorListAdapter(Context context, List<TeacherClass> teacherList) {
         super(context, R.layout.tutor_item_layout, teacherList);

@@ -1,6 +1,5 @@
-package SandZ.Tutors;
+package SandZ.Tutors.activites;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -16,7 +15,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AddTerm extends AppCompatActivity {
+import SandZ.Tutors.R;
+import SandZ.Tutors.database_handlers.FirebaseManager;
+
+public class AddingTermView extends AppCompatActivity {
     private FirebaseManager manager;
     private EditText dateEditText, timeEditText, linkEditText;
 
@@ -44,7 +46,7 @@ public class AddTerm extends AppCompatActivity {
             if (timestamp != null) {
                 manager.addTermToFirebase(manager.getCurrentUser().getUid(), timestamp,false,link);
             } else {
-                Toast.makeText(AddTerm.this, "Invalid date or time format", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddingTermView.this, "Invalid date or time format", Toast.LENGTH_SHORT).show();
             }
         });
     }

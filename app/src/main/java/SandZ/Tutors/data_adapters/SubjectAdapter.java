@@ -1,4 +1,4 @@
-package SandZ.Tutors;
+package SandZ.Tutors.data_adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,10 +14,12 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import SandZ.Tutors.R;
+
 public class SubjectAdapter extends ArrayAdapter<String> {
-    private List<String> teacherSubjects;
-    private List<String> subjects;
-    private List<String> selectedSubjects;
+    private final List<String> teacherSubjects;
+    private final List<String> subjects;
+    private final List<String> selectedSubjects;
 
     public SubjectAdapter(Context context, List<String> subjects, List<String> teacherSubjects) {
         super(context, R.layout.subject_item_layout, subjects);

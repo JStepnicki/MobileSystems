@@ -1,4 +1,4 @@
-package SandZ.Tutors;
+package SandZ.Tutors.activites;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -9,14 +9,20 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchForTutor extends AppCompatActivity {
+import SandZ.Tutors.R;
+import SandZ.Tutors.data_adapters.TutorListAdapter;
+import SandZ.Tutors.data.classes.TeacherClass;
+import SandZ.Tutors.database_handlers.FirebaseManager;
+import SandZ.Tutors.database_handlers.SubjectListCallback;
+import SandZ.Tutors.database_handlers.TeacherListCallback;
+
+public class TutorBrowserView extends AppCompatActivity {
     private FirebaseManager manager;
     private Button subjectButton;
 
@@ -64,7 +70,7 @@ public class SearchForTutor extends AppCompatActivity {
                         TeacherClass selectedTeacher = (TeacherClass) parent.getItemAtPosition(position);
                         if (selectedTeacher != null) {
                             // Przykładowa akcja po kliknięciu nauczyciela
-                            Intent intent = new Intent(SearchForTutor.this, TeacherAccountView.class);
+                            Intent intent = new Intent(TutorBrowserView.this, TeacherAccountView.class);
                             intent.putExtra("teacher", selectedTeacher);
                             startActivity(intent);
                         }

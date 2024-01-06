@@ -1,4 +1,4 @@
-package SandZ.Tutors;
+package SandZ.Tutors.data.classes;
 
 import java.io.Serializable;
 import java.util.List;
@@ -9,7 +9,7 @@ public class TeacherClass implements Serializable {
     private String name;
     private String surname;
     private List<String> subjects;
-    private List<Integer> rates;
+    private final List<Integer> rates;
 
     public TeacherClass(String id, String email, String name, String surname, List<String> subjects, List<Integer> rates) {
         this.id = id;

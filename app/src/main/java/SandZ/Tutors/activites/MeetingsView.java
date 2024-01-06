@@ -1,4 +1,4 @@
-package SandZ.Tutors;
+package SandZ.Tutors.activites;
 
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -10,14 +10,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.FirebaseApp;
-
 
 
 import java.util.ArrayList;
-import java.util.Date;
 
-public class Meetings extends AppCompatActivity {
+import SandZ.Tutors.R;
+import SandZ.Tutors.data.classes.Meeting;
+import SandZ.Tutors.database_handlers.FirebaseManager;
+
+public class MeetingsView extends AppCompatActivity {
 
     private FirebaseManager manager;
 
@@ -30,11 +31,11 @@ public class Meetings extends AppCompatActivity {
     }
 
 
-    private OnSuccessListener<ArrayList<Meeting>> successListener = new OnSuccessListener<ArrayList<Meeting>>() {
+    private final OnSuccessListener<ArrayList<Meeting>> successListener = new OnSuccessListener<ArrayList<Meeting>>() {
         @Override
         public void onSuccess(ArrayList<Meeting> meetings) {
             if (meetings.isEmpty()) {
-                Toast.makeText(Meetings.this, "Brak spotkań", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MeetingsView.this, "Brak spotkań", Toast.LENGTH_SHORT).show();
             } else {
                 ArrayList<String> meetingLinks = new ArrayList<>();
                 for (Meeting meeting : meetings) {
@@ -44,17 +45,17 @@ public class Meetings extends AppCompatActivity {
                     }
                 }
 
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(Meetings.this, android.R.layout.simple_list_item_1, meetingLinks);
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(MeetingsView.this, android.R.layout.simple_list_item_1, meetingLinks);
                 ListView meetingView = findViewById(R.id.meetingView);
                 meetingView.setAdapter(arrayAdapter);
             }
         }
     };
 
-    private OnFailureListener failureListener = new OnFailureListener() {
+    private final OnFailureListener failureListener = new OnFailureListener() {
         @Override
         public void onFailure(@NonNull Exception e) {
-            Toast.makeText(Meetings.this, "Błąd: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(MeetingsView.this, "Błąd: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     };

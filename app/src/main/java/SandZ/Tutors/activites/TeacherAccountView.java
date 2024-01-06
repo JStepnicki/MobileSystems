@@ -1,4 +1,4 @@
-package SandZ.Tutors;
+package SandZ.Tutors.activites;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
+
+import SandZ.Tutors.R;
+import SandZ.Tutors.data.classes.TeacherClass;
 
 public class TeacherAccountView extends AppCompatActivity {
     private TextView textView6;

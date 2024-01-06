@@ -1,4 +1,4 @@
-package SandZ.Tutors;
+package SandZ.Tutors.activites;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,8 +16,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import SandZ.Tutors.R;
+import SandZ.Tutors.data.classes.Term;
+import SandZ.Tutors.database_handlers.FirebaseManager;
 
-public class TeacherTerms extends AppCompatActivity {
+
+public class TeacherTermsView extends AppCompatActivity {
     private FirebaseManager manager;
     private ArrayList<Term> user_terms;
     private ArrayList<String> terms_hours;
@@ -50,14 +54,14 @@ public class TeacherTerms extends AppCompatActivity {
         });
 
         addButton.setOnClickListener(v -> {
-            Intent intent = new Intent(TeacherTerms.this, AddTerm.class);
+            Intent intent = new Intent(TeacherTermsView.this, AddingTermView.class);
             startActivity(intent);
 
     }
         );
     }
 
-        private OnSuccessListener<ArrayList<Term>> successListener = new OnSuccessListener<ArrayList<Term>>() {
+        private final OnSuccessListener<ArrayList<Term>> successListener = new OnSuccessListener<ArrayList<Term>>() {
             @Override
             public void onSuccess(ArrayList<Term> terms) {
                 if (terms.isEmpty()) {
@@ -70,17 +74,17 @@ public class TeacherTerms extends AppCompatActivity {
                         }
                     }
 
-                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(TeacherTerms.this, android.R.layout.simple_list_item_1, terms_hours);
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(TeacherTermsView.this, android.R.layout.simple_list_item_1, terms_hours);
                     ListView listView = findViewById(R.id.listView);
                     listView.setAdapter(arrayAdapter);
                 }
             }
         };
 
-        private OnFailureListener failureListener = new OnFailureListener() {
+        private final OnFailureListener failureListener = new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(TeacherTerms.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(TeacherTermsView.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         };

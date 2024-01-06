@@ -1,4 +1,4 @@
-package SandZ.Tutors;
+package SandZ.Tutors.activites;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +18,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class Login extends AppCompatActivity {
+import SandZ.Tutors.database_handlers.FirebaseManager;
+import SandZ.Tutors.database_handlers.OnDataRetrievedListener;
+import SandZ.Tutors.R;
+
+public class LoginView extends AppCompatActivity {
     private Button btnLogin;
     private FirebaseManager manager;
     private TextInputEditText editTextEmail, editTextPassword;
@@ -36,17 +40,17 @@ public class Login extends AppCompatActivity {
                     if (!TextUtils.isEmpty(data)) {
                         // Redirect based on user type
                         if ("student".equals(data)) {
-                            Intent intent = new Intent(Login.this, Student.class);
+                            Intent intent = new Intent(LoginView.this, StudentMainView.class);
                             startActivity(intent);
                         } else if ("teacher".equals(data)) {
-                            Intent intent = new Intent(Login.this, Teacher.class);
+                            Intent intent = new Intent(LoginView.this, TeacherMainView.class);
                             startActivity(intent);
                         } else {
-                            Toast.makeText(Login.this, "Unknown user type", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginView.this, "Unknown user type", Toast.LENGTH_SHORT).show();
                         }
                         finish();
                     } else {
-                        Toast.makeText(Login.this, "User type not found", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginView.this, "User type not found", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -71,11 +75,11 @@ public class Login extends AppCompatActivity {
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText());
                 if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(Login.this, "Enter email", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginView.this, "Enter email", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (TextUtils.isEmpty(password)) {
-                    Toast.makeText(Login.this, "Enter password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginView.this, "Enter password", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -90,22 +94,22 @@ public class Login extends AppCompatActivity {
                                             if (!TextUtils.isEmpty(data)) {
                                                 // Redirect based on user type
                                                 if ("student".equals(data)) {
-                                                    Intent intent = new Intent(Login.this, Student.class);
+                                                    Intent intent = new Intent(LoginView.this, StudentMainView.class);
                                                     startActivity(intent);
                                                 } else if ("teacher".equals(data)) {
-                                                    Intent intent = new Intent(Login.this, Teacher.class);
+                                                    Intent intent = new Intent(LoginView.this, TeacherMainView.class);
                                                     startActivity(intent);
                                                 } else {
-                                                    Toast.makeText(Login.this, "Unknown user type", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(LoginView.this, "Unknown user type", Toast.LENGTH_SHORT).show();
                                                 }
                                                 finish();
                                             } else {
-                                                Toast.makeText(Login.this, "User type not found", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(LoginView.this, "User type not found", Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
                                 } else {
-                                    Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginView.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -115,7 +119,7 @@ public class Login extends AppCompatActivity {
         switchToRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Register.class);
+                Intent intent = new Intent(getApplicationContext(), RegisterView.class);
                 startActivity(intent);
                 finish();
             }

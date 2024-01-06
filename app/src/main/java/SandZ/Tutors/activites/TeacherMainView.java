@@ -1,4 +1,4 @@
-package SandZ.Tutors;
+package SandZ.Tutors.activites;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,8 +11,11 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseUser;
 
+import SandZ.Tutors.R;
+import SandZ.Tutors.database_handlers.FirebaseManager;
 
-public class Teacher extends AppCompatActivity {
+
+public class TeacherMainView extends AppCompatActivity {
 
     Button btnLogout, btnTeacherMeetings, btnTerms, btnTeacherSubjects;
     TextView email, userType;
@@ -32,21 +35,21 @@ public class Teacher extends AppCompatActivity {
         user = manager.getCurrentUser();
         btnLogout.setOnClickListener(v -> {
             manager.signOut();
-            Intent intent = new Intent(getApplicationContext(), Login.class);
+            Intent intent = new Intent(getApplicationContext(), LoginView.class);
             startActivity(intent);
             finish();
         });
         btnTeacherMeetings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Meetings.class);
+                Intent intent = new Intent(getApplicationContext(), MeetingsView.class);
                 startActivity(intent);
             }
         });
         btnTerms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), TeacherTerms.class);
+                Intent intent = new Intent(getApplicationContext(), TeacherTermsView.class);
                 startActivity(intent);
             }
         });
@@ -58,7 +61,7 @@ public class Teacher extends AppCompatActivity {
             }
         });
         if (user == null) {
-            Intent intent = new Intent(getApplicationContext(), Login.class);
+            Intent intent = new Intent(getApplicationContext(), LoginView.class);
             startActivity(intent);
             finish();
         } else {
