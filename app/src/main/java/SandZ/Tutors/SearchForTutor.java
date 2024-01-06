@@ -1,11 +1,13 @@
 package SandZ.Tutors;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +18,11 @@ import java.util.List;
 public class SearchForTutor extends AppCompatActivity {
     private FirebaseManager manager;
     private Button subjectButton;
+
+    private ListView tutorListView;
+    private TutorListAdapter adapter;
+    private Context context;
+    private List<TeacherClass> teachers;
     private List<String> subjects;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +31,9 @@ public class SearchForTutor extends AppCompatActivity {
         manager = new FirebaseManager(this);
         subjects = new ArrayList<>();
         subjectButton = findViewById(R.id.subject_button);
+        tutorListView = findViewById(R.id.tutorListView);
+        context = this;
+        teachers = new ArrayList<TeacherClass>();
 
         subjectButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,6 +46,13 @@ public class SearchForTutor extends AppCompatActivity {
             @Override
             public void onSubjectListReceived(List<String> receivedSubjects) {
                 subjects = receivedSubjects;
+            }
+        });
+        manager.getTeacherList(new TeacherListCallback() {
+            @Override
+            public void onTeacherListReceived(List<TeacherClass> receivedTeachers) {
+                adapter = new TutorListAdapter(context, receivedTeachers);
+                tutorListView.setAdapter(adapter);
             }
         });
     }

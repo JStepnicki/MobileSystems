@@ -20,7 +20,7 @@ public class SubjectAdapter extends ArrayAdapter<String> {
     private List<String> selectedSubjects;
 
     public SubjectAdapter(Context context, List<String> subjects, List<String> teacherSubjects) {
-        super(context, R.layout.list_item_layout, subjects);
+        super(context, R.layout.subject_item_layout, subjects);
         this.subjects = subjects;
         this.teacherSubjects = teacherSubjects;
         this.selectedSubjects = new ArrayList<>();
@@ -30,7 +30,7 @@ public class SubjectAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_layout, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.subject_item_layout, parent, false);
         }
 
         String subject = getItem(position);
