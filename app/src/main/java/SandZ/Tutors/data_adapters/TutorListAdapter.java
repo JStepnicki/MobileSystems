@@ -42,8 +42,8 @@ public class TutorListAdapter extends ArrayAdapter<TeacherClass> {
             imageView.setImageResource(R.mipmap.seal);
             nameView.setText(teacher.getName());
             surnameView.setText(teacher.getSurname());
-            priceView.setText(teacher.getPrice()); // Zastąp odpowiednią wartością
-            rateView.setText("-"); // Zastąp odpowiednią wartością
+            priceView.setText(teacher.getStringPrice()+"zł/h");
+            rateView.setText("-");
         }
 
         return convertView;

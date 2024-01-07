@@ -106,7 +106,6 @@ public class FirebaseManager {
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
                                                     if (isTeacher) {
-                                                        // Additional fields for teachers
                                                         Map<String, Object> teacherData = new HashMap<>();
                                                         teacherData.put("link", "");
                                                         teacherData.put("subjects", new ArrayList<>());
@@ -255,8 +254,9 @@ public class FirebaseManager {
                             String surname = document.getString("surname");
                             List<String> subjects = (List<String>) document.get("subjects");
                             List<Integer> rates = (List<Integer>) document.get("rates");
+                            int price = document.getLong("price").intValue();
 
-                            TeacherClass teacher = new TeacherClass(id, email, name, surname, subjects, rates);
+                            TeacherClass teacher = new TeacherClass(id, email, name, surname, subjects, rates,price);
                             teachers.add(teacher);
                         }
                         callback.onTeacherListReceived(teachers);
@@ -265,18 +265,14 @@ public class FirebaseManager {
     }
 
     public void updateSubjects(String userID, List<String> newSubjects, Context context) {
-        // Utwórz mapę, która będzie zawierała jedynie listę nowych przedmiotów
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put("subjects", newSubjects);
 
-        // Zaktualizuj dokument użytkownika z nową listą przedmiotów
         db.collection("users").document(userID).set(updateMap, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {
-                    // Wyświetl Toast o sukcesie
                     Toast.makeText(context, "Przedmioty zaktualizowane pomyślnie", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
-                    // Obsługa błędu (jeśli coś poszło nie tak)
                     e.printStackTrace();
                     Toast.makeText(context, "Błąd podczas aktualizacji przedmiotów", Toast.LENGTH_SHORT).show();
                 });
