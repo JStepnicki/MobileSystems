@@ -99,7 +99,38 @@ public class TutorBrowserView extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
+        priceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Sort the list of teachers by price
+                Collections.sort(filtered_teachers, new Comparator<TeacherClass>() {
+                    @Override
+                    public int compare(TeacherClass teacher1, TeacherClass teacher2) {
+                        return teacher1.getPrice() - teacher2.getPrice();
+                    }
+                });
+                adapter.notifyDataSetChanged();
+            }
+        });
+        rateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Sort the list of teachers by rating in descending order
+                Collections.sort(filtered_teachers, new Comparator<TeacherClass>() {
+                    @Override
+                    public int compare(TeacherClass teacher1, TeacherClass teacher2) {
+                        float rate1 = teacher1.getRate();
+                        float rate2 = teacher2.getRate();
+                        return Float.compare(rate2, rate1);  // Switched the positions of rate2 and rate1
+                    }
+                });
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+
     }
+
 
 
     private void showFilterDialog() {
