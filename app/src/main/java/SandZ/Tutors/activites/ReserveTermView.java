@@ -20,6 +20,7 @@ import SandZ.Tutors.R;
 import SandZ.Tutors.data.classes.TeacherClass;
 import SandZ.Tutors.data.classes.Term;
 import SandZ.Tutors.database_handlers.FirebaseManager;
+import SandZ.Tutors.database_handlers.OnDataRetrievedListener;
 
 public class ReserveTermView extends AppCompatActivity {
     private FirebaseManager manager;
@@ -54,7 +55,13 @@ public class ReserveTermView extends AppCompatActivity {
             manager.getTermsForTeacher(teacher.getId(), successListener, failureListener);
         });
         termList = new ArrayList<>();
-        studentName = "Student";
+        manager.getUserData("name", new OnDataRetrievedListener() {
+            @Override
+            public void onDataRetrieved(String data) {
+                studentName = data;
+            }
+        });
+
 
     }
     private final OnSuccessListener<ArrayList<Term>> successListener = new OnSuccessListener<ArrayList<Term>>() {

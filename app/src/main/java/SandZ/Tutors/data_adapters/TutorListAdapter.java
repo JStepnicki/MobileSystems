@@ -18,12 +18,10 @@ import SandZ.Tutors.data.classes.TeacherClass;
 
 public class TutorListAdapter extends ArrayAdapter<TeacherClass> {
     private final List<TeacherClass> teacherList;
-    private final String filter;
 
     public TutorListAdapter(Context context, List<TeacherClass> teacherList) {
         super(context, R.layout.tutor_item_layout, teacherList);
         this.teacherList = teacherList;
-        this.filter = "alphabetical";
     }
 
     @NonNull
