@@ -357,17 +357,15 @@ public class FirebaseManager {
                 });
     }
     public void addRate(String teacherId, String studentId, int rate) {
-        // Get the Firestore instance
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // Construct a map to represent the new rating
         Map<String, Object> newRating = new HashMap<>();
         newRating.put("studentId", studentId);
         newRating.put("value", rate);
 
-        // Update the document with the new rating
+
         db.collection("users").document(teacherId)
-                .update("ratings." + studentId, rate)  // Use studentId as the key
+                .update("ratings." + studentId, rate)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(context, "Ocena dodana pomyślnie", Toast.LENGTH_SHORT).show();
                 })
@@ -377,21 +375,47 @@ public class FirebaseManager {
                 });
     }
 
+    public void getTeacherById(String userId, final TeacherCallback callback) {
+        db.collection("users")
+                .document(userId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists() && documentSnapshot.getString("userType").equals("teacher")) {
+                        String id = documentSnapshot.getId();
+                        String email = documentSnapshot.getString("email");
+                        String name = documentSnapshot.getString("name");
+                        String surname = documentSnapshot.getString("surname");
+                        List<String> subjects = (List<String>) documentSnapshot.get("subjects");
 
+                        // Retrieve the "rates" field as a map of strings to numbers
+                        Map<String, Object> ratesMap = (Map<String, Object>) documentSnapshot.get("ratings");
+                        List<Integer> rates = new ArrayList<>();
+                        if (ratesMap != null) {
+                            for (Object rate : ratesMap.values()) {
+                                // Assuming rates are stored as numbers
+                                if (rate instanceof Number) {
+                                    rates.add(((Number) rate).intValue());
+                                }
+                            }
+                        }
 
-    public void addImage(String teacherId, int image){
-        Map<String, Object> updateMap = new HashMap<>();
-        updateMap.put("picture", image);
-
-        db.collection("users").document(teacherId).set(updateMap, SetOptions.merge())
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(context, "Zdjęcie zaktualizowane pomyślnie", Toast.LENGTH_SHORT).show();
+                        int price = documentSnapshot.getLong("price").intValue();
+                        int picture = documentSnapshot.getLong("picture").intValue();
+                        TeacherClass teacher = new TeacherClass(id, email, name, surname, subjects, rates, price, picture);
+                        callback.onTeacherReceived(teacher);
+                    } else {
+                        // User does not exist or is not a teacher
+                        callback.onTeacherReceived(null);
+                    }
                 })
                 .addOnFailureListener(e -> {
                     e.printStackTrace();
-                    Toast.makeText(context, "Błąd podczas aktualizacji zdjęcia", Toast.LENGTH_SHORT).show();
+                    // Handle failure
+                    callback.onTeacherReceived(null);
                 });
     }
+
+
 
 }
 

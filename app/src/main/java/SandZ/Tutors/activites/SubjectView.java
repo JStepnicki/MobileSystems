@@ -44,7 +44,7 @@ public class SubjectView extends AppCompatActivity {
         subjectsReceived = false;
         teacherSubjectsReceived = false;
         
-        listView = findViewById(R.id.subjectListView);
+        listView = findViewById(R.id.subjectList);
         updateButton = findViewById(R.id.button);
 
 
