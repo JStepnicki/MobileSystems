@@ -14,15 +14,17 @@ import java.util.List;
 
 import SandZ.Tutors.R;
 import SandZ.Tutors.data.classes.TeacherClass;
+import SandZ.Tutors.database_handlers.FirebaseManager;
 
 public class TeacherAccountView extends AppCompatActivity {
-    private TextView textView6;
     private ImageView profilePicture;
     private Button reserveTermButton;
     private TextView nameText;
     private TextView surnameText;
     private RatingBar ratingBar;
     private TextView subjectListView;
+
+    private FirebaseManager manager;
     private TeacherClass teacher;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,8 @@ public class TeacherAccountView extends AppCompatActivity {
 
         Intent receivedIntent = getIntent();
         teacher = (TeacherClass) receivedIntent.getExtras().get("teacher");
+
+        manager = new FirebaseManager(this);
 
         profilePicture = findViewById(R.id.profile_picutre);
         reserveTermButton = findViewById(R.id.show_terms_calendar);
@@ -41,7 +45,15 @@ public class TeacherAccountView extends AppCompatActivity {
 
         nameText.setText(teacher.getName());
         surnameText.setText(teacher.getSurname());
-        ratingBar.setRating(5);//tu trzeba jebnac obliczanie sredniej ocen
+        ratingBar.setRating(teacher.getRate());
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                int integerRating = Math.round(rating);
+
+                manager.addRate(teacher.getId(), manager.getCurrentUser().getUid(), integerRating);
+            }
+        });
 
         List<String> subjects = teacher.getSubjects();
 

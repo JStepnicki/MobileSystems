@@ -89,7 +89,6 @@ public class TutorBrowserView extends AppCompatActivity {
         alphabeticalButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Sort the list of teachers alphabetically by surname
                 Collections.sort(filtered_teachers, new Comparator<TeacherClass>() {
                     @Override
                     public int compare(TeacherClass teacher1, TeacherClass teacher2) {
@@ -115,13 +114,12 @@ public class TutorBrowserView extends AppCompatActivity {
         rateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Sort the list of teachers by rating in descending order
                 Collections.sort(filtered_teachers, new Comparator<TeacherClass>() {
                     @Override
                     public int compare(TeacherClass teacher1, TeacherClass teacher2) {
                         float rate1 = teacher1.getRate();
                         float rate2 = teacher2.getRate();
-                        return Float.compare(rate2, rate1);  // Switched the positions of rate2 and rate1
+                        return Float.compare(rate2, rate1);
                     }
                 });
                 adapter.notifyDataSetChanged();
@@ -151,7 +149,6 @@ public class TutorBrowserView extends AppCompatActivity {
                             tutorListView.setAdapter(adapter);
                             return;
                         }
-                        // Filter teachers based on the selected subject
                         List<TeacherClass> filteredTeachers = new ArrayList<>();
                         for (TeacherClass teacher : filtered_teachers) {
                             if (teacher.getSubjects().contains(selectedOption)) {
