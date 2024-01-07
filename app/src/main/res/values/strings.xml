@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">TutorApp</string>
+    <string name="login">LOGIN</string>
+    <string name="password">PASSWORD</string>
+    <string name="email">EMAIL</string>
+    <string name="register">REGISTER</string>
+    <string name="register_as_teacher">REGISTER AS TEACHER</string>
+    <string name="logout">LOGOUT</string>
+    <string name="click_to_register">Click to Register</string>
+    <string name="click_to_login">Click to Login</string>
 </resources>
