@@ -17,11 +17,9 @@ import SandZ.Tutors.R;
 import SandZ.Tutors.data.classes.TeacherClass;
 
 public class TutorListAdapter extends ArrayAdapter<TeacherClass> {
-    private final List<TeacherClass> teacherList;
 
     public TutorListAdapter(Context context, List<TeacherClass> teacherList) {
         super(context, R.layout.tutor_item_layout, teacherList);
-        this.teacherList = teacherList;
     }
 
     @NonNull
@@ -40,7 +38,7 @@ public class TutorListAdapter extends ArrayAdapter<TeacherClass> {
 
         if (teacher != null) {
             if(teacher.getPicture()==0){
-                imageView.setImageResource(R.mipmap.seal);
+                imageView.setImageResource(R.mipmap.avatar);
             }
             else{
                 imageView.setImageResource(teacher.getPicture());

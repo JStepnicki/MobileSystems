@@ -415,7 +415,36 @@ public class FirebaseManager {
                 });
     }
 
+    public void getImage(String userID, OnSuccessListener<Integer> successListener, OnFailureListener failureListener) {
+        db.collection("users").document(userID).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        int picture = documentSnapshot.getLong("picture").intValue();
+                        successListener.onSuccess(picture);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        failureListener.onFailure(e);
+                    }
+                });
+    }
 
+    public void setImage(String userID, int picture) {
+        Map<String, Object> updateMap = new HashMap<>();
+        updateMap.put("picture", picture);
+
+        db.collection("users").document(userID).set(updateMap, SetOptions.merge())
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(context, "Zdjęcie zaktualizowane pomyślnie", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    e.printStackTrace();
+                    Toast.makeText(context, "Błąd podczas aktualizacji zdjęcia", Toast.LENGTH_SHORT).show();
+                });
+    }
 
 }
 

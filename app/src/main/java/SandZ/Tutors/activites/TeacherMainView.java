@@ -53,6 +53,14 @@ public class TeacherMainView extends AppCompatActivity {
         user = manager.getCurrentUser();
         profilePictureView = findViewById(R.id.profilePictureTeacher);
 
+        profilePictureView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SelectProfilePictureView.class);
+                startActivity(intent);
+            }
+        });
+
         btnLogout.setOnClickListener(v -> {
             manager.signOut();
             Intent intent = new Intent(getApplicationContext(), LoginView.class);
@@ -140,7 +148,7 @@ public class TeacherMainView extends AppCompatActivity {
                     }
 
                     if(teacher.getPicture() == 0) {
-                        profilePictureView.setImageResource(R.mipmap.seal);
+                        profilePictureView.setImageResource(R.mipmap.avatar);
                     }
                     else{
                         profilePictureView.setImageResource(teacher.getPicture());

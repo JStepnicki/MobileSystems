@@ -1,12 +1,16 @@
 package SandZ.Tutors.activites;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -17,6 +21,8 @@ import SandZ.Tutors.database_handlers.OnDataRetrievedListener;
 
 public class StudentMainView extends AppCompatActivity {
     Button btnLogout, btnMeetings, btnSearch;
+
+    ImageView profilePic;
     TextView name;
     FirebaseUser user;
     private FirebaseManager manager;
@@ -32,7 +38,15 @@ public class StudentMainView extends AppCompatActivity {
         btnSearch = findViewById(R.id.go_to_search);
         name = findViewById(R.id.user_name_student);
         user = manager.getCurrentUser();
+        profilePic = findViewById(R.id.ProfilePicStudent);
 
+        profilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SelectProfilePictureView.class);
+                startActivity(intent);
+            }
+        });
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +83,33 @@ public class StudentMainView extends AppCompatActivity {
                 name.setText(data);
             }
         });
+
+        manager.getUserData("surname", new OnDataRetrievedListener() {
+            @Override
+            public void onDataRetrieved(String data) {
+                name.setText(name.getText() + " " + data);
+            }
+        });
+
+        manager.getImage(manager.getCurrentUser().getUid(),
+                new OnSuccessListener<Integer>() {
+                    @Override
+                    public void onSuccess(Integer picture) {
+                        if(picture == 0){
+                            profilePic.setImageResource(R.mipmap.avatar);
+                        }
+                        else{
+                            profilePic.setImageResource(picture);
+
+                        }
+                    }
+                },
+                new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Obsługa błędu
+                    }
+                });
 
 
     }

@@ -39,6 +39,7 @@ public class TeacherTermsView extends AppCompatActivity {
         user_terms = new ArrayList<>();
         terms_hours = new ArrayList<>();
 
+
         Calendar today = Calendar.getInstance();
         SelectedYear = today.get(Calendar.YEAR);
         SelectedMonth = today.get(Calendar.MONTH);
