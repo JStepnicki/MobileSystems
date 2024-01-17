@@ -80,6 +80,7 @@ public class SubjectView extends AppCompatActivity {
             public void onClick(View v) {
                 selectedSubjects = adapter.getSelectedSubjects();
                 manager.updateSubjects(manager.getCurrentUser().getUid(), selectedSubjects,context);
+                finish();
                 }
         });
     }

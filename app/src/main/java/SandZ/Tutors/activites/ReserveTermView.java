@@ -25,10 +25,8 @@ import SandZ.Tutors.database_handlers.OnDataRetrievedListener;
 public class ReserveTermView extends AppCompatActivity {
     private FirebaseManager manager;
     private List<Term> termList;
-    private ListView listView;
     private ArrayList<String> terms_hours;
     private TeacherClass teacher;
-
     private String studentName;
     private int SelectedYear, SelectedMonth, SelectedDay;
     @Override
@@ -52,7 +50,7 @@ public class ReserveTermView extends AppCompatActivity {
             SelectedYear = year;
             SelectedMonth = month;
             SelectedDay = day;
-            manager.getTermsForTeacher(teacher.getId(), successListener, failureListener);
+            manager.getTermsForTeacher(teacher.getId(), successListener);
         });
         termList = new ArrayList<>();
         manager.getUserData("name", new OnDataRetrievedListener() {
@@ -68,7 +66,7 @@ public class ReserveTermView extends AppCompatActivity {
         @Override
         public void onSuccess(ArrayList<Term> terms) {
             termList.clear();
-            terms_hours.clear();  // Wyczyszczenie poprzednich danych
+            terms_hours.clear();
 
             for (Term term : terms) {
                 if (term.checkDate(SelectedYear, SelectedMonth, SelectedDay) && !term.isBooked()) {
@@ -81,11 +79,14 @@ public class ReserveTermView extends AppCompatActivity {
             ListView listView = findViewById(R.id.availableTermsListView);
             listView.setAdapter(arrayAdapter);
 
-            // Dodanie obsługi kliknięcia na element listy
             listView.setOnItemClickListener((parent, view, position, id) -> {
                 Term selectedTerm = termList.get(position);
                 manager.addMeetingForTeacherAndStudent(teacher.getId(), manager.getCurrentUser().getUid(), selectedTerm.getTimestamp(),selectedTerm.getLink(),teacher.getName(),studentName);
                 Toast.makeText(ReserveTermView.this, "Selected Term: " + selectedTerm.getTimeAsString(), Toast.LENGTH_SHORT).show();
+                terms_hours.remove(position);
+                termList.remove(position);
+                arrayAdapter.notifyDataSetChanged();
+                finish();
             });
         }
     };

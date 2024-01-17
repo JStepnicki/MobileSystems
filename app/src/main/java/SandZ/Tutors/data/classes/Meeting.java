@@ -1,5 +1,7 @@
 package SandZ.Tutors.data.classes;
 
+import androidx.annotation.NonNull;
+
 import java.util.Date;
 
 public class Meeting {
@@ -49,6 +51,7 @@ public class Meeting {
         this.teacher = teacher;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Meeting{" +

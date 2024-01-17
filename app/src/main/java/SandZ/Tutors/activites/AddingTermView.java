@@ -1,5 +1,6 @@
 package SandZ.Tutors.activites;
 
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -32,10 +33,13 @@ public class AddingTermView extends AppCompatActivity {
         timeEditText = findViewById(R.id.timeEditText);
         linkEditText = findViewById(R.id.linkEditText);
         Button addButton = findViewById(R.id.addTermButton);
+
         calendarView.setOnDateChangeListener((view, year, month, day) -> {
             String selectedDate = year + "-" + (month + 1) + "-" + day;
             dateEditText.setText(selectedDate);
         });
+
+        timeEditText.setOnClickListener(v -> showTimePickerDialog());
 
         addButton.setOnClickListener(v -> {
             String selectedDate = dateEditText.getText().toString();
@@ -43,12 +47,35 @@ public class AddingTermView extends AppCompatActivity {
             String link = linkEditText.getText().toString();
             Timestamp timestamp = prepareTimestamp(selectedDate, selectedTime);
 
+            if(link.isEmpty())
+                Toast.makeText(AddingTermView.this, "You need to add link", Toast.LENGTH_SHORT).show();
             if (timestamp != null) {
-                manager.addTermToFirebase(manager.getCurrentUser().getUid(), timestamp,false,link);
+                manager.addTermToFirebase(manager.getCurrentUser().getUid(), timestamp, false, link);
+                dateEditText.setText("");
+                timeEditText.setText("");
             } else {
                 Toast.makeText(AddingTermView.this, "Invalid date or time format", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void showTimePickerDialog() {
+        Calendar currentTime = Calendar.getInstance();
+        int hour = currentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = currentTime.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                this,
+                (view, selectedHour, selectedMinute) -> {
+                    String formattedTime = String.format("%02d:%02d", selectedHour, selectedMinute);
+                    timeEditText.setText(formattedTime);
+                },
+                hour,
+                minute,
+                true
+        );
+
+        timePickerDialog.show();
     }
 
     private Timestamp prepareTimestamp(String date, String time) {
