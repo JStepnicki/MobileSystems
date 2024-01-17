@@ -46,7 +46,7 @@
         android:layout_marginTop="16dp"
         android:text="my subjects"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/teacher_terms" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_teacher_meetings" />
 
     <TextView
         android:id="@+id/textView7"
@@ -63,7 +63,7 @@
 
     <Button
         android:id="@+id/set_price"
-        android:layout_width="0dp"
+        android:layout_width="123dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="48dp"
