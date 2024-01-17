@@ -1,25 +1,16 @@
 package SandZ.Tutors.activites;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import SandZ.Tutors.R;
 import SandZ.Tutors.database_handlers.FirebaseManager;
 
 public class SelectProfilePictureView extends AppCompatActivity {
-
-    // Przykładowy identyfikator użytkownika - dostosuj do swoich potrzeb
-    private String userID = "exampleUserID";
     private FirebaseManager manager;
 
     @Override
@@ -27,7 +18,7 @@ public class SelectProfilePictureView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_profile_picture_view);
         manager = new FirebaseManager(this);
-        // Przykładowe obrazy - dostosuj do swoich zasobów
+
         ImageView imageChoose1 = findViewById(R.id.imageChoose1);
         ImageView imageChoose2 = findViewById(R.id.imageChoose2);
         ImageView imageChoose3 = findViewById(R.id.imageChoose3);
@@ -41,7 +32,6 @@ public class SelectProfilePictureView extends AppCompatActivity {
         ImageView imageChoose11 = findViewById(R.id.imageChoose11);
         ImageView imageChoose12 = findViewById(R.id.imageChoose12);
 
-        // Ustawiamy dla każdego obrazu obsługę kliknięcia
         setOnClickListenerForImage(imageChoose1, 1);
         setOnClickListenerForImage(imageChoose2, 2);
         setOnClickListenerForImage(imageChoose3, 3);
@@ -62,6 +52,8 @@ public class SelectProfilePictureView extends AppCompatActivity {
             public void onClick(View v) {
                 int imageResource = getImageResource(imageNumber);
                 manager.setImage(manager.getCurrentUser().getUid(), imageResource);
+                Toast.makeText(SelectProfilePictureView.this, "image changed", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
     }
