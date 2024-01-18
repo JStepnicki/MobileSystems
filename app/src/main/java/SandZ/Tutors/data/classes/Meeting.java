@@ -1,7 +1,5 @@
 package SandZ.Tutors.data.classes;
 
-import androidx.annotation.NonNull;
-
 import java.util.Date;
 
 public class Meeting {
@@ -10,7 +8,6 @@ public class Meeting {
     private String student;
     private String teacher;
 
-    // Konstruktor
     public Meeting(Date date, String link, String student, String teacher) {
         this.date = date;
         this.link = link;
@@ -18,7 +15,6 @@ public class Meeting {
         this.teacher = teacher;
     }
 
-    // Gettery i settery
     public Date getDate() {
         return date;
     }
@@ -50,15 +46,6 @@ public class Meeting {
     public void setTeacher(String teacher) {
         this.teacher = teacher;
     }
+    public String getDateString(){return date.toString();}
 
-    @NonNull
-    @Override
-    public String toString() {
-        return "Meeting{" +
-                "date=" + date +
-                ", link='" + link + '\'' +
-                ", student='" + student + '\'' +
-                ", teacher='" + teacher + '\'' +
-                '}';
-    }
 }

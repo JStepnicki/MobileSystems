@@ -236,10 +236,10 @@ public class FirebaseManager {
         updateMap.put("subjects", newSubjects);
 
         db.collection("users").document(userID).set(updateMap, SetOptions.merge())
-                .addOnSuccessListener(aVoid -> Toast.makeText(context, "Przedmioty zaktualizowane pomyślnie", Toast.LENGTH_SHORT).show())
+                .addOnSuccessListener(aVoid -> Toast.makeText(context, "Subjects actualized successfully", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> {
                     e.printStackTrace();
-                    Toast.makeText(context, "Błąd podczas aktualizacji przedmiotów", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Error during actualization", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -290,10 +290,10 @@ public class FirebaseManager {
         updateMap.put("price", price);
 
         db.collection("users").document(teacherId).set(updateMap, SetOptions.merge())
-                .addOnSuccessListener(aVoid -> Toast.makeText(context, "Cena zaktualizowana pomyślnie", Toast.LENGTH_SHORT).show())
+                .addOnSuccessListener(aVoid -> Toast.makeText(context, "Price actualized successfully", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> {
                     e.printStackTrace();
-                    Toast.makeText(context, "Błąd podczas aktualizacji ceny", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Error during updating price", Toast.LENGTH_SHORT).show();
                 });
     }
     public void addRate(String teacherId, String studentId, int rate) {
@@ -306,10 +306,10 @@ public class FirebaseManager {
 
         db.collection("users").document(teacherId)
                 .update("ratings." + studentId, rate)
-                .addOnSuccessListener(aVoid -> Toast.makeText(context, "Ocena dodana pomyślnie", Toast.LENGTH_SHORT).show())
+                .addOnSuccessListener(aVoid -> Toast.makeText(context, "Rate added successfully", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> {
                     e.printStackTrace();
-                    Toast.makeText(context, "Błąd podczas aktualizacji oceny", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "\"Error during adding rate", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -367,10 +367,10 @@ public class FirebaseManager {
         updateMap.put("picture", picture);
 
         db.collection("users").document(userID).set(updateMap, SetOptions.merge())
-                .addOnSuccessListener(aVoid -> Toast.makeText(context, "Zdjęcie zaktualizowane pomyślnie", Toast.LENGTH_SHORT).show())
+                .addOnSuccessListener(aVoid -> Toast.makeText(context, "Image updated successfully", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> {
                     e.printStackTrace();
-                    Toast.makeText(context, "Błąd podczas aktualizacji zdjęcia", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Error during updating image", Toast.LENGTH_SHORT).show();
                 });
     }
 

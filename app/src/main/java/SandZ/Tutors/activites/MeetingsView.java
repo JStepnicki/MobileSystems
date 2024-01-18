@@ -33,7 +33,7 @@ public class MeetingsView extends AppCompatActivity {
     }
     private final OnSuccessListener<ArrayList<Meeting>> successListener = meetings -> {
         if (meetings.isEmpty()) {
-            Toast.makeText(MeetingsView.this, "Brak spotkań", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MeetingsView.this, "No meetings", Toast.LENGTH_SHORT).show();
         } else {
             ArrayList<String> meetingLinks = new ArrayList<>();
             for (Meeting meeting : meetings) {
