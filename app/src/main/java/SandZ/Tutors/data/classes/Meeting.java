@@ -1,6 +1,8 @@
 package SandZ.Tutors.data.classes;
 
 import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class Meeting {
     private Date date;
@@ -46,6 +48,10 @@ public class Meeting {
     public void setTeacher(String teacher) {
         this.teacher = teacher;
     }
-    public String getDateString(){return date.toString();}
+    public String getDateString() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.getDefault());
+        return dateFormat.format(date);
+    }
+
 
 }

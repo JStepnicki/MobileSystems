@@ -31,13 +31,11 @@ public class MeetingAdapter extends ArrayAdapter<Meeting> {
         TextView dateView = convertView.findViewById(R.id.dateView);
         TextView teacherName = convertView.findViewById(R.id.teacherName);
         TextView studentName = convertView.findViewById(R.id.studentName);
-        TextView linkView = convertView.findViewById(R.id.linkView);
 
         if (meeting != null) {
             dateView.setText(meeting.getDateString());
             teacherName.setText(meeting.getTeacher());
             studentName.setText(meeting.getStudent());
-            linkView.setText(meeting.getLink());
         }
 
         return convertView;
