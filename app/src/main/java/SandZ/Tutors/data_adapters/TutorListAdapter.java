@@ -38,7 +38,7 @@ public class TutorListAdapter extends ArrayAdapter<TeacherClass> {
 
         if (teacher != null) {
             if(teacher.getPicture()==0){
-                imageView.setImageResource(R.mipmap.avatar);
+                imageView.setImageResource(R.mipmap.annonym);
             }
             else{
                 imageView.setImageResource(teacher.getPicture());

@@ -78,7 +78,7 @@ public class StudentMainView extends AppCompatActivity {
         manager.getImage(manager.getCurrentUser().getUid(),
                 picture -> {
                     if (picture == 0) {
-                        profilePic.setImageResource(R.mipmap.avatar);
+                        profilePic.setImageResource(R.mipmap.annonym);
                     } else {
                         profilePic.setImageResource(picture);
 

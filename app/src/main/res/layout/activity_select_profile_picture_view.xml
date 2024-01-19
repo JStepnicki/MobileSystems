@@ -27,21 +27,21 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/avatar" />
+                android:src="@mipmap/men1" />
 
             <ImageView
                 android:id="@+id/imageChoose2"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/burn" />
+                android:src="@mipmap/men2" />
 
             <ImageView
                 android:id="@+id/imageChoose3"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
-                android:layout_weight="0"
-                android:src="@mipmap/cat" />
+                android:layout_weight="1"
+                android:src="@mipmap/women1" />
 
         </TableRow>
 
@@ -54,21 +54,21 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/cat3" />
+                android:src="@mipmap/women2" />
 
             <ImageView
                 android:id="@+id/imageChoose5"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/cat2" />
+                android:src="@mipmap/boy1" />
 
             <ImageView
                 android:id="@+id/imageChoose6"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
-                android:layout_weight="0"
-                android:src="@mipmap/kid" />
+                android:layout_weight="1"
+                android:src="@mipmap/boy2" />
 
         </TableRow>
 
@@ -81,20 +81,20 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/men1" />
+                android:src="@mipmap/girl1" />
 
             <ImageView
                 android:id="@+id/imageChoose8"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/panda" />
+                android:src="@mipmap/girl2" />
             <ImageView
                 android:id="@+id/imageChoose9"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
-                android:layout_weight="0"
-                android:src="@mipmap/seal" />
+                android:layout_weight="1"
+                android:src="@mipmap/cat" />
 
         </TableRow>
 
@@ -107,21 +107,21 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/smile" />
+                android:src="@mipmap/monkey" />
 
             <ImageView
                 android:id="@+id/imageChoose11"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/woman1" />
+                android:src="@mipmap/seal" />
 
             <ImageView
                 android:id="@+id/imageChoose12"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
-                android:layout_weight="0"
-                android:src="@mipmap/woman2" />
+                android:layout_weight="1"
+                android:src="@mipmap/annonym" />
 
         </TableRow>
 
