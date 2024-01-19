@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -17,7 +16,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import SandZ.Tutors.R;
 import SandZ.Tutors.data.classes.Meeting;
@@ -44,23 +46,28 @@ public class MeetingsView extends AppCompatActivity {
         if (meetings.isEmpty()) {
             Toast.makeText(MeetingsView.this, "No meetings", Toast.LENGTH_SHORT).show();
         } else {
-            MeetingAdapter meetingAdapter = new MeetingAdapter(MeetingsView.this, meetings);
-            ListView meetingListView = findViewById(R.id.meetingView);
-            meetingListView.setAdapter(meetingAdapter);
+            ArrayList<Meeting> upcomingMeetings = filterUpcomingMeetings(meetings);
 
-            // Add item click listener
-            meetingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Meeting selectedMeeting = meetings.get(position);
-                    showLinkDialog(selectedMeeting.getLink());
-                }
-            });
+            if (upcomingMeetings.isEmpty()) {
+                Toast.makeText(MeetingsView.this, "No upcoming meetings", Toast.LENGTH_SHORT).show();
+            } else {
+                MeetingAdapter meetingAdapter = new MeetingAdapter(MeetingsView.this, upcomingMeetings);
+                ListView meetingListView = findViewById(R.id.meetingView);
+                meetingListView.setAdapter(meetingAdapter);
+
+                meetingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Meeting selectedMeeting = upcomingMeetings.get(position);
+                        showLinkDialog(selectedMeeting.getLink());
+                    }
+                });
+            }
         }
     };
 
     private final OnFailureListener failureListener = e -> {
-        Toast.makeText(MeetingsView.this, "Błąd: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(MeetingsView.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         e.printStackTrace();
     };
 
@@ -81,5 +88,19 @@ public class MeetingsView extends AppCompatActivity {
         ClipData clip = ClipData.newPlainText("Meeting Link", textToCopy);
         clipboardManager.setPrimaryClip(clip);
         Toast.makeText(this, "Link copied to clipboard", Toast.LENGTH_SHORT).show();
+    }
+
+    private ArrayList<Meeting> filterUpcomingMeetings(ArrayList<Meeting> meetings) {
+        ArrayList<Meeting> upcomingMeetings = new ArrayList<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        Date currentDate = new Date();
+
+        for (Meeting meeting : meetings) {
+            if (meeting.getDate().after(currentDate)) {
+                upcomingMeetings.add(meeting);
+            }
+        }
+
+        return upcomingMeetings;
     }
 }

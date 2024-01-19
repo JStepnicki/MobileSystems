@@ -24,7 +24,7 @@
         android:layout_marginStart="179dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="175dp"
-        android:text="Reserve Term"
+        android:text="Reserve Term at:"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

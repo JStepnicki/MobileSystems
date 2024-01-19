@@ -1,21 +1,24 @@
 package SandZ.Tutors.activites;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.content.Intent;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Calendar;
+import java.util.List;
+
 import SandZ.Tutors.R;
 import SandZ.Tutors.data.classes.TeacherClass;
 import SandZ.Tutors.data.classes.Term;
@@ -25,10 +28,13 @@ import SandZ.Tutors.database_handlers.OnDataRetrievedListener;
 public class ReserveTermView extends AppCompatActivity {
     private FirebaseManager manager;
     private List<Term> termList;
-    private ArrayList<String> terms_hours;
+    private ArrayList<String> termsHours;
     private TeacherClass teacher;
     private String studentName;
-    private int SelectedYear, SelectedMonth, SelectedDay;
+
+    private ArrayAdapter<String> arrayAdapter;
+    private int selectedYear, selectedMonth, selectedDay;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,20 +44,21 @@ public class ReserveTermView extends AppCompatActivity {
         teacher = (TeacherClass) receivedIntent.getExtras().get("teacher");
 
         manager = new FirebaseManager(this);
-        terms_hours = new ArrayList<>();
+        termsHours = new ArrayList<>();
 
         CalendarView calendarView = findViewById(R.id.calendarView2);
         Calendar today = Calendar.getInstance();
-        SelectedYear = today.get(Calendar.YEAR);
-        SelectedMonth = today.get(Calendar.MONTH);
-        SelectedDay = today.get(Calendar.DAY_OF_MONTH);
+        selectedYear = today.get(Calendar.YEAR);
+        selectedMonth = today.get(Calendar.MONTH);
+        selectedDay = today.get(Calendar.DAY_OF_MONTH);
 
         calendarView.setOnDateChangeListener((view, year, month, day) -> {
-            SelectedYear = year;
-            SelectedMonth = month;
-            SelectedDay = day;
+            selectedYear = year;
+            selectedMonth = month;
+            selectedDay = day;
             manager.getTermsForTeacher(teacher.getId(), successListener);
         });
+
         termList = new ArrayList<>();
         manager.getUserData("name", new OnDataRetrievedListener() {
             @Override
@@ -59,37 +66,59 @@ public class ReserveTermView extends AppCompatActivity {
                 studentName = data;
             }
         });
-
-
     }
+
+    private void showConfirmationDialog(final Term selectedTerm) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirm Reservation");
+        builder.setMessage("Do you want to reserve the term at " + selectedTerm.getTimeAsString() + "?");
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                manager.addMeetingForTeacherAndStudent(teacher.getId(), manager.getCurrentUser().getUid(), selectedTerm.getTimestamp(), selectedTerm.getLink(), teacher.getName(), studentName);
+                Toast.makeText(ReserveTermView.this, "Reservation confirmed", Toast.LENGTH_SHORT).show();
+                termsHours.remove(selectedTerm.getTimeAsString());
+                termList.remove(selectedTerm);
+                arrayAdapter.notifyDataSetChanged();
+                finish();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.show();
+    }
+
     private final OnSuccessListener<ArrayList<Term>> successListener = new OnSuccessListener<ArrayList<Term>>() {
         @Override
         public void onSuccess(ArrayList<Term> terms) {
             termList.clear();
-            terms_hours.clear();
+            termsHours.clear();
 
             for (Term term : terms) {
-                if (term.checkDate(SelectedYear, SelectedMonth, SelectedDay) && !term.isBooked()) {
+                if (term.checkDate(selectedYear, selectedMonth, selectedDay) && !term.isBooked()) {
                     termList.add(term);
-                    terms_hours.add(term.getTimeAsString());
+                    termsHours.add(term.getTimeAsString());
                 }
             }
 
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(ReserveTermView.this, android.R.layout.simple_list_item_1, terms_hours);
+            arrayAdapter = new ArrayAdapter<>(ReserveTermView.this, android.R.layout.simple_list_item_1, termsHours);
             ListView listView = findViewById(R.id.availableTermsListView);
             listView.setAdapter(arrayAdapter);
 
             listView.setOnItemClickListener((parent, view, position, id) -> {
                 Term selectedTerm = termList.get(position);
-                manager.addMeetingForTeacherAndStudent(teacher.getId(), manager.getCurrentUser().getUid(), selectedTerm.getTimestamp(),selectedTerm.getLink(),teacher.getName(),studentName);
-                Toast.makeText(ReserveTermView.this, "Selected Term: " + selectedTerm.getTimeAsString(), Toast.LENGTH_SHORT).show();
-                terms_hours.remove(position);
-                termList.remove(position);
-                arrayAdapter.notifyDataSetChanged();
-                finish();
+                showConfirmationDialog(selectedTerm);
             });
         }
     };
+
     private final OnFailureListener failureListener = new OnFailureListener() {
         @Override
         public void onFailure(@NonNull Exception e) {
