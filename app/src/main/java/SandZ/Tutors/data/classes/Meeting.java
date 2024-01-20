@@ -1,6 +1,8 @@
 package SandZ.Tutors.data.classes;
 
 import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class Meeting {
     private Date date;
@@ -8,7 +10,6 @@ public class Meeting {
     private String student;
     private String teacher;
 
-    // Konstruktor
     public Meeting(Date date, String link, String student, String teacher) {
         this.date = date;
         this.link = link;
@@ -16,7 +17,6 @@ public class Meeting {
         this.teacher = teacher;
     }
 
-    // Gettery i settery
     public Date getDate() {
         return date;
     }
@@ -48,14 +48,10 @@ public class Meeting {
     public void setTeacher(String teacher) {
         this.teacher = teacher;
     }
-
-    @Override
-    public String toString() {
-        return "Meeting{" +
-                "date=" + date +
-                ", link='" + link + '\'' +
-                ", student='" + student + '\'' +
-                ", teacher='" + teacher + '\'' +
-                '}';
+    public String getDateString() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.getDefault());
+        return dateFormat.format(date);
     }
+
+
 }

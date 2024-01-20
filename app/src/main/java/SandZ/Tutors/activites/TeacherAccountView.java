@@ -17,12 +17,6 @@ import SandZ.Tutors.data.classes.TeacherClass;
 import SandZ.Tutors.database_handlers.FirebaseManager;
 
 public class TeacherAccountView extends AppCompatActivity {
-    private ImageView profilePicture;
-    private Button reserveTermButton;
-    private TextView nameText;
-    private TextView surnameText;
-    private RatingBar ratingBar;
-    private TextView subjectListView;
 
     private FirebaseManager manager;
     private TeacherClass teacher;
@@ -36,16 +30,17 @@ public class TeacherAccountView extends AppCompatActivity {
 
         manager = new FirebaseManager(this);
 
-        profilePicture = findViewById(R.id.profile_picutre);
-        reserveTermButton = findViewById(R.id.show_terms_calendar);
-        nameText = findViewById(R.id.name_text);
-        surnameText = findViewById(R.id.surname_text);
-        ratingBar = findViewById(R.id.ratingBar);
-        subjectListView = findViewById(R.id.subject_list_view);
+        ImageView profilePicture = findViewById(R.id.profile_picutre);
+        Button reserveTermButton = findViewById(R.id.show_terms_calendar);
+        TextView nameText = findViewById(R.id.name_text);
+        TextView surnameText = findViewById(R.id.surname_text);
+        RatingBar ratingBar = findViewById(R.id.ratingBar);
+        TextView subjectListView = findViewById(R.id.subject_list_view);
 
         nameText.setText(teacher.getName());
         surnameText.setText(teacher.getSurname());
         ratingBar.setRating(teacher.getRate());
+        profilePicture.setImageResource(teacher.getPicture());
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
@@ -67,7 +62,6 @@ public class TeacherAccountView extends AppCompatActivity {
             }
         }
 
-        // Dodajemy obsługę zdarzeń
         reserveTermButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,7 +70,5 @@ public class TeacherAccountView extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        // Możesz dodać obsługę zdarzeń dla innych elementów, jeśli to potrzebne
     }
 }

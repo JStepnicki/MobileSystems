@@ -13,8 +13,6 @@ public class TeacherClass implements Serializable {
     private int price;
     private final List<Integer> rates;
 
-
-
     public TeacherClass(String id, String email, String name, String surname, List<String> subjects, List<Integer> rates, int price,int picture) {
         this.id = id;
         this.email = email;

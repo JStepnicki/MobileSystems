@@ -1,62 +1,106 @@
 package SandZ.Tutors.activites;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import SandZ.Tutors.R;
 import SandZ.Tutors.data.classes.Meeting;
+import SandZ.Tutors.data_adapters.MeetingAdapter;
 import SandZ.Tutors.database_handlers.FirebaseManager;
 
 public class MeetingsView extends AppCompatActivity {
-
-    private FirebaseManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meetings);
-        manager = new FirebaseManager(this);
+        FirebaseManager manager = new FirebaseManager(this);
+    }
+
+    @Override
+    protected void onStart() {
+        FirebaseManager manager = new FirebaseManager(this);
+        super.onStart();
         manager.getMeetingsForCurrentUser(successListener, failureListener);
     }
 
+    private final OnSuccessListener<ArrayList<Meeting>> successListener = meetings -> {
+        if (meetings.isEmpty()) {
+            Toast.makeText(MeetingsView.this, "No meetings", Toast.LENGTH_SHORT).show();
+        } else {
+            ArrayList<Meeting> upcomingMeetings = filterUpcomingMeetings(meetings);
 
-    private final OnSuccessListener<ArrayList<Meeting>> successListener = new OnSuccessListener<ArrayList<Meeting>>() {
-        @Override
-        public void onSuccess(ArrayList<Meeting> meetings) {
-            if (meetings.isEmpty()) {
-                Toast.makeText(MeetingsView.this, "Brak spotkań", Toast.LENGTH_SHORT).show();
+            if (upcomingMeetings.isEmpty()) {
+                Toast.makeText(MeetingsView.this, "No upcoming meetings", Toast.LENGTH_SHORT).show();
             } else {
-                ArrayList<String> meetingLinks = new ArrayList<>();
-                for (Meeting meeting : meetings) {
-                    String link = meeting.getLink();
-                    if (link != null && !link.isEmpty()) {
-                        meetingLinks.add(link);
-                    }
-                }
+                MeetingAdapter meetingAdapter = new MeetingAdapter(MeetingsView.this, upcomingMeetings);
+                ListView meetingListView = findViewById(R.id.meetingView);
+                meetingListView.setAdapter(meetingAdapter);
 
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(MeetingsView.this, android.R.layout.simple_list_item_1, meetingLinks);
-                ListView meetingView = findViewById(R.id.meetingView);
-                meetingView.setAdapter(arrayAdapter);
+                meetingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Meeting selectedMeeting = upcomingMeetings.get(position);
+                        showLinkDialog(selectedMeeting.getLink());
+                    }
+                });
             }
         }
     };
 
-    private final OnFailureListener failureListener = new OnFailureListener() {
-        @Override
-        public void onFailure(@NonNull Exception e) {
-            Toast.makeText(MeetingsView.this, "Błąd: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
+    private final OnFailureListener failureListener = e -> {
+        Toast.makeText(MeetingsView.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        e.printStackTrace();
     };
+
+    private void showLinkDialog(String link) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Meeting Link:")
+                .setMessage(link)
+                .setPositiveButton("Copy", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        copyToClipboard(link);
+                    }
+                });
+        builder.create().show();
+    }
+
+    private void copyToClipboard(String textToCopy) {
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("Meeting Link", textToCopy);
+        clipboardManager.setPrimaryClip(clip);
+        Toast.makeText(this, "Link copied to clipboard", Toast.LENGTH_SHORT).show();
+    }
+
+    private ArrayList<Meeting> filterUpcomingMeetings(ArrayList<Meeting> meetings) {
+        ArrayList<Meeting> upcomingMeetings = new ArrayList<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        Date currentDate = new Date();
+
+        for (Meeting meeting : meetings) {
+            if (meeting.getDate().after(currentDate)) {
+                upcomingMeetings.add(meeting);
+            }
+        }
+
+        return upcomingMeetings;
+    }
 }

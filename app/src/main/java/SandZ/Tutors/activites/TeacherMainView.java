@@ -3,13 +3,9 @@ package SandZ.Tutors.activites;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,8 +19,6 @@ import java.util.List;
 import SandZ.Tutors.R;
 import SandZ.Tutors.data.classes.TeacherClass;
 import SandZ.Tutors.database_handlers.FirebaseManager;
-import SandZ.Tutors.database_handlers.OnDataRetrievedListener;
-import SandZ.Tutors.database_handlers.TeacherCallback;
 
 
 public class TeacherMainView extends AppCompatActivity {
@@ -53,12 +47,9 @@ public class TeacherMainView extends AppCompatActivity {
         user = manager.getCurrentUser();
         profilePictureView = findViewById(R.id.profilePictureTeacher);
 
-        profilePictureView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SelectProfilePictureView.class);
-                startActivity(intent);
-            }
+        profilePictureView.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), SelectProfilePictureView.class);
+            startActivity(intent);
         });
 
         btnLogout.setOnClickListener(v -> {
@@ -67,58 +58,38 @@ public class TeacherMainView extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
-        btnTeacherMeetings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MeetingsView.class);
-                startActivity(intent);
-            }
+        btnTeacherMeetings.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), MeetingsView.class);
+            startActivity(intent);
         });
-        btnTerms.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), TeacherTermsView.class);
-                startActivity(intent);
-            }
+        btnTerms.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), TeacherTermsView.class);
+            startActivity(intent);
         });
-        btnTeacherSubjects.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SubjectView.class);
-                startActivity(intent);
-            }
+        btnTeacherSubjects.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), SubjectView.class);
+            startActivity(intent);
         });
-        btnPrice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(TeacherMainView.this);
-                builder.setTitle("Enter Price");
+        btnPrice.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(TeacherMainView.this);
+            builder.setTitle("Enter Price");
 
-                final EditText input = new EditText(TeacherMainView.this);
-                input.setInputType(InputType.TYPE_CLASS_NUMBER);
-                builder.setView(input);
+            final EditText input = new EditText(TeacherMainView.this);
+            input.setInputType(InputType.TYPE_CLASS_NUMBER);
+            builder.setView(input);
 
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String enteredValue = input.getText().toString();
-                        try {
-                            int priceValue = Integer.parseInt(enteredValue);
-                            manager.updatePrice(manager.getCurrentUser().getUid(), priceValue);
-                        } catch (NumberFormatException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+            builder.setPositiveButton("OK", (dialog, which) -> {
+                String enteredValue = input.getText().toString();
+                try {
+                    int priceValue = Integer.parseInt(enteredValue);
+                    manager.updatePrice(manager.getCurrentUser().getUid(), priceValue);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            });
 
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                builder.show();
-            }
+            builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+            builder.show();
         });
 
 
@@ -127,38 +98,40 @@ public class TeacherMainView extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-        manager.getTeacherById(manager.getCurrentUser().getUid(), new TeacherCallback() {
-            @Override
-            public void onTeacherReceived(TeacherClass teacher) {
-                if (teacher != null) {
-                    teacher_object = teacher;
-                    credentials.setText(teacher.getName() + " " + teacher.getSurname());
-                    ratingBar.setRating(teacher.getRate());
 
-                    List<String> subjects = teacher.getSubjects();
-                    subjectsTextView.setText("My subjects:\n");
-                    for (int i = 0; i < subjects.size(); i++) {
-                        subjectsTextView.append(subjects.get(i));
-                        if (i < subjects.size() - 1) {
-                            subjectsTextView.append(", ");
-                        }
-                        if ((i + 1) % 3 == 0 && i < subjects.size() - 1) {
-                            subjectsTextView.append("\n");
-                        }
-                    }
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        manager.getTeacherById(manager.getCurrentUser().getUid(), teacher -> {
+            if (teacher != null) {
+                teacher_object = teacher;
+                credentials.setText(teacher_object.getName() + " " + teacher_object.getSurname());
+                ratingBar.setRating(teacher_object.getRate());
 
-                    if(teacher.getPicture() == 0) {
-                        profilePictureView.setImageResource(R.mipmap.avatar);
+                List<String> subjects = teacher_object.getSubjects();
+                subjectsTextView.setText("My subjects:\n");
+                for (int i = 0; i < subjects.size(); i++) {
+                    subjectsTextView.append(subjects.get(i));
+                    if (i < subjects.size() - 1) {
+                        subjectsTextView.append(", ");
                     }
-                    else{
-                        profilePictureView.setImageResource(teacher.getPicture());
+                    if ((i + 1) % 3 == 0 && i < subjects.size() - 1) {
+                        subjectsTextView.append("\n");
                     }
-
-                } else {
-                    Intent intent = new Intent(getApplicationContext(), LoginView.class);
-                    startActivity(intent);
-                    finish();
                 }
+
+                if(teacher.getPicture() == 0) {
+                    profilePictureView.setImageResource(R.mipmap.annonym);
+                }
+                else{
+                    profilePictureView.setImageResource(teacher_object.getPicture());
+                }
+
+            } else {
+                Intent intent = new Intent(getApplicationContext(), LoginView.class);
+                startActivity(intent);
+                finish();
             }
         });
 

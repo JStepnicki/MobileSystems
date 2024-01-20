@@ -31,14 +31,14 @@ public class TutorListAdapter extends ArrayAdapter<TeacherClass> {
 
         TeacherClass teacher = getItem(position);
         ImageView imageView = convertView.findViewById(R.id.profile_picutre);
-        TextView nameView = convertView.findViewById(R.id.nameView);
-        TextView surnameView = convertView.findViewById(R.id.surnameView);
-        TextView priceView = convertView.findViewById(R.id.priceView);
-        TextView rateView = convertView.findViewById(R.id.rateView);
+        TextView nameView = convertView.findViewById(R.id.linkView);
+        TextView surnameView = convertView.findViewById(R.id.dateView);
+        TextView priceView = convertView.findViewById(R.id.teacherName);
+        TextView rateView = convertView.findViewById(R.id.studentName);
 
         if (teacher != null) {
             if(teacher.getPicture()==0){
-                imageView.setImageResource(R.mipmap.avatar);
+                imageView.setImageResource(R.mipmap.annonym);
             }
             else{
                 imageView.setImageResource(teacher.getPicture());

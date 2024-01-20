@@ -44,14 +44,14 @@ public class TeacherTermsView extends AppCompatActivity {
         SelectedYear = today.get(Calendar.YEAR);
         SelectedMonth = today.get(Calendar.MONTH);
         SelectedDay = today.get(Calendar.DAY_OF_MONTH);
-        manager.getTermsForTeacher(manager.getCurrentUser().getUid(), successListener, failureListener);
+        manager.getTermsForTeacher(manager.getCurrentUser().getUid(), successListener);
 
         calendarView.setOnDateChangeListener((view, year, month, day) -> {
             SelectedYear = year;
             SelectedMonth = month;
             SelectedDay = day;
             terms_hours.clear();
-            manager.getTermsForTeacher(manager.getCurrentUser().getUid(), successListener, failureListener);
+            manager.getTermsForTeacher(manager.getCurrentUser().getUid(), successListener);
         });
 
         addButton.setOnClickListener(v -> {

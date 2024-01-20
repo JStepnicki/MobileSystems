@@ -38,17 +38,10 @@ public class Term {
     }
 
     public String getTimeAsString() {
-        // Utwórz kalendarz i ustaw go na czas obiektu Timestamp
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timestamp.toDate().getTime());
-
-        // Dodaj godzinę do kalendarza
         calendar.add(Calendar.HOUR_OF_DAY, 1);
-
-        // Utwórz obiekt Date na podstawie kalendarza
         Date modifiedDate = calendar.getTime();
-
-        // Ustaw strefę czasową na UTC+1 dla SimpleDateFormat
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC+1"));
 

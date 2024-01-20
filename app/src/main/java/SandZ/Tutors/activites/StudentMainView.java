@@ -37,6 +37,13 @@ public class StudentMainView extends AppCompatActivity {
         user = manager.getCurrentUser();
         profilePic = findViewById(R.id.ProfilePicStudent);
 
+
+        if (user == null) {
+            Intent intent = new Intent(getApplicationContext(), LoginView.class);
+            startActivity(intent);
+            finish();
+        }
+
         profilePic.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), SelectProfilePictureView.class);
             startActivity(intent);
@@ -71,14 +78,13 @@ public class StudentMainView extends AppCompatActivity {
         manager.getImage(manager.getCurrentUser().getUid(),
                 picture -> {
                     if (picture == 0) {
-                        profilePic.setImageResource(R.mipmap.avatar);
+                        profilePic.setImageResource(R.mipmap.annonym);
                     } else {
                         profilePic.setImageResource(picture);
 
                     }
                 },
                 e -> {
-                    // Obsługa błędu
                 });
 
 

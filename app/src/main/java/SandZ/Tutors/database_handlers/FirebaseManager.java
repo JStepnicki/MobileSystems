@@ -5,27 +5,24 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import com.google.android.gms.tasks.OnCompleteListener;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.auth.AuthResult;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import SandZ.Tutors.activites.LoginView;
 import SandZ.Tutors.activites.RegisterView;
@@ -64,20 +61,17 @@ public class FirebaseManager {
 
         if (user != null) {
             DocumentReference userRef = db.collection("users").document(user.getUid());
-            userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            String data = document.getString(fieldName);
-                            listener.onDataRetrieved(data != null ? data : "");
-                        } else {
-                            listener.onDataRetrieved("");
-                        }
+            userRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        String data = document.getString(fieldName);
+                        listener.onDataRetrieved(data != null ? data : "");
                     } else {
                         listener.onDataRetrieved("");
                     }
+                } else {
+                    listener.onDataRetrieved("");
                 }
             });
         } else {
@@ -86,64 +80,55 @@ public class FirebaseManager {
     }
     public void registerUser(String email, String password, String name, String surname, boolean isTeacher) {
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            if (user != null) {
-                                // Create a user object with additional details
-                                Map<String, Object> userData = new HashMap<>();
-                                userData.put("email", email);
-                                userData.put("name", name);
-                                userData.put("surname", surname);
-                                userData.put("userType", isTeacher ? "teacher" : "student");
-                                userData.put("picture", 0);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user != null) {
+                            // Create a user object with additional details
+                            Map<String, Object> userData = new HashMap<>();
+                            userData.put("email", email);
+                            userData.put("name", name);
+                            userData.put("surname", surname);
+                            userData.put("userType", isTeacher ? "teacher" : "student");
+                            userData.put("picture", 0);
 
-                                // Store the user in Firestore
-                                db.collection("users").document(user.getUid())
-                                        .set(userData, SetOptions.merge())
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    if (isTeacher) {
-                                                        Map<String, Object> teacherData = new HashMap<>();
-                                                        teacherData.put("subjects", new ArrayList<>());
-                                                        teacherData.put("price", 0);
-                                                        db.collection("users").document(user.getUid())
-                                                                .set(teacherData, SetOptions.merge())
-                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                    @Override
-                                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                                        if (task.isSuccessful()) {
-                                                                            Toast.makeText(context, "Account created and user information added to Firestore.", Toast.LENGTH_SHORT).show();
-                                                                            Intent intent = new Intent(context, LoginView.class);
-                                                                            context.startActivity(intent);
-                                                                            ((RegisterView) context).finish();
-                                                                        } else {
-                                                                            Toast.makeText(context, "Account created, but failed to add teacher information to Firestore.", Toast.LENGTH_SHORT).show();
-                                                                        }
-                                                                    }
-                                                                });
-                                                    } else {
-                                                        // Student registration
-                                                        Toast.makeText(context, "Account created and user information added to Firestore.", Toast.LENGTH_SHORT).show();
-                                                        Intent intent = new Intent(context, LoginView.class);
-                                                        context.startActivity(intent);
-                                                        ((RegisterView) context).finish();
-                                                    }
-                                                } else {
-                                                    Toast.makeText(context, "Account created, but failed to add user information to Firestore.", Toast.LENGTH_SHORT).show();
-                                                }
+                            // Store the user in Firestore
+                            db.collection("users").document(user.getUid())
+                                    .set(userData, SetOptions.merge())
+                                    .addOnCompleteListener(task12 -> {
+                                        if (task12.isSuccessful()) {
+                                            if (isTeacher) {
+                                                Map<String, Object> teacherData = new HashMap<>();
+                                                teacherData.put("subjects", new ArrayList<>());
+                                                teacherData.put("price", 0);
+                                                db.collection("users").document(user.getUid())
+                                                        .set(teacherData, SetOptions.merge())
+                                                        .addOnCompleteListener(task1 -> {
+                                                            if (task1.isSuccessful()) {
+                                                                Toast.makeText(context, "Account created and user information added to Firestore.", Toast.LENGTH_SHORT).show();
+                                                                Intent intent = new Intent(context, LoginView.class);
+                                                                context.startActivity(intent);
+                                                                ((RegisterView) context).finish();
+                                                            } else {
+                                                                Toast.makeText(context, "Account created, but failed to add teacher information to Firestore.", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
+                                            } else {
+                                                // Student registration
+                                                Toast.makeText(context, "Account created and user information added to Firestore.", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(context, LoginView.class);
+                                                context.startActivity(intent);
+                                                ((RegisterView) context).finish();
                                             }
-                                        });
-                            } else {
-                                Toast.makeText(context, "User is null.", Toast.LENGTH_SHORT).show();
-                            }
+                                        } else {
+                                            Toast.makeText(context, "Account created, but failed to add user information to Firestore.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                         } else {
-                            Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "User is null.", Toast.LENGTH_SHORT).show();
                         }
+                    } else {
+                        Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -153,51 +138,35 @@ public class FirebaseManager {
 
         db.collection("users").document(user.getUid()).collection("meetings")
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                            Date startDate = document.getDate("date");
-                            String link = document.getString("link");
-                            String student = document.getString("student");
-                            String teacher = document.getString("teacher");
-                            Meeting spotkanie = new Meeting(startDate, link, student, teacher);
-                            meetings_objects.add(spotkanie);
-                        }
-                        successListener.onSuccess(meetings_objects);
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Date startDate = document.getDate("date");
+                        String link = document.getString("link");
+                        String student = document.getString("student");
+                        String teacher = document.getString("teacher");
+                        Meeting spotkanie = new Meeting(startDate, link, student, teacher);
+                        meetings_objects.add(spotkanie);
                     }
+                    successListener.onSuccess(meetings_objects);
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        failureListener.onFailure(e);
-                    }
-                });
+                .addOnFailureListener(failureListener);
     }
-    public void getTermsForTeacher(String userID, OnSuccessListener<ArrayList<Term>> successListener, OnFailureListener failureListener) {
+    public void getTermsForTeacher(String userID, OnSuccessListener<ArrayList<Term>> successListener) {
         ArrayList<Term> terms_objects = new ArrayList<>();
 
         db.collection("users").document(userID).collection("terms")
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for(QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                            com.google.firebase.Timestamp timestamp = document.getTimestamp("date");
-                            boolean isBooked = document.getBoolean("isBooked");
-                            String link = document.getString("link");
-                            Term term = new Term(timestamp, isBooked,link);
-                            terms_objects.add(term);
-                        }
-                        successListener.onSuccess(terms_objects);
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for(QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Timestamp timestamp = document.getTimestamp("date");
+                        boolean isBooked = Boolean.TRUE.equals(document.getBoolean("isBooked"));
+                        String link = document.getString("link");
+                        Term term = new Term(timestamp, isBooked,link);
+                        terms_objects.add(term);
                     }
+                    successListener.onSuccess(terms_objects);
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context,"Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                .addOnFailureListener(e -> Toast.makeText(context,"Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
     public void addTermToFirebase(String userID, Timestamp timestamp, boolean isBooked, String link) {
@@ -208,38 +177,26 @@ public class FirebaseManager {
 
         db.collection("users").document(userID).collection("terms")
                 .add(termData)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(context, "Term added", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context,"Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                .addOnSuccessListener(documentReference -> Toast.makeText(context, "Term added", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(context,"Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
     public void getSubjectList(final SubjectListCallback callback) {
         ArrayList<String> subjects = new ArrayList<>();
         db.collection("subjects")
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots){
-                        for(QueryDocumentSnapshot document : queryDocumentSnapshots){
-                            String subject = document.getId();
-                            subjects.add(subject);
-                        }
-                        callback.onSubjectListReceived(subjects);
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for(QueryDocumentSnapshot document : queryDocumentSnapshots){
+                        String subject = document.getId();
+                        subjects.add(subject);
                     }
+                    callback.onSubjectListReceived(subjects);
                 });
     }
 
     public void getTeacherList(final TeacherListCallback callback) {
         ArrayList<TeacherClass> teachers = new ArrayList<>();
+        // Handle failure
         db.collection("users")
                 .whereEqualTo("userType", "teacher")
                 .get()
@@ -263,17 +220,14 @@ public class FirebaseManager {
                             }
                         }
 
-                        int price = document.getLong("price").intValue();
-                        int picture = document.getLong("picture").intValue();
+                        int price = Objects.requireNonNull(document.getLong("price")).intValue();
+                        int picture = Objects.requireNonNull(document.getLong("picture")).intValue();
                         TeacherClass teacher = new TeacherClass(id, email, name, surname, subjects, rates, price, picture);
                         teachers.add(teacher);
                     }
                     callback.onTeacherListReceived(teachers);
                 })
-                .addOnFailureListener(e -> {
-                    e.printStackTrace();
-                    // Handle failure
-                });
+                .addOnFailureListener(Throwable::printStackTrace);
     }
 
 
@@ -282,33 +236,23 @@ public class FirebaseManager {
         updateMap.put("subjects", newSubjects);
 
         db.collection("users").document(userID).set(updateMap, SetOptions.merge())
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(context, "Przedmioty zaktualizowane pomyślnie", Toast.LENGTH_SHORT).show();
-                })
+                .addOnSuccessListener(aVoid -> Toast.makeText(context, "Subjects actualized successfully", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> {
                     e.printStackTrace();
-                    Toast.makeText(context, "Błąd podczas aktualizacji przedmiotów", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Error during actualization", Toast.LENGTH_SHORT).show();
                 });
     }
 
     public void getTeacherSubjects(String teacherID, OnSuccessListener<ArrayList<String>> successListener, OnFailureListener failureListener) {
         db.collection("users").document(teacherID).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        ArrayList<String> teacherSubjects = new ArrayList<>();
-                        if (documentSnapshot.exists()) {
-                            teacherSubjects = (ArrayList<String>) documentSnapshot.get("subjects");
-                        }
-                        successListener.onSuccess(teacherSubjects);
+                .addOnSuccessListener(documentSnapshot -> {
+                    ArrayList<String> teacherSubjects = new ArrayList<>();
+                    if (documentSnapshot.exists()) {
+                        teacherSubjects = (ArrayList<String>) documentSnapshot.get("subjects");
                     }
+                    successListener.onSuccess(teacherSubjects);
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        failureListener.onFailure(e);
-                    }
-                });
+                .addOnFailureListener(e -> failureListener.onFailure(e));
     }
 
     public void addMeetingForTeacherAndStudent(String teacherID, String studentID, Timestamp date, String link, String teacher, String student) {
@@ -318,18 +262,16 @@ public class FirebaseManager {
         meetingData.put("teacher", teacher);
         meetingData.put("student", student);
 
-        addMeetingToCollection(teacherID, meetingData, "meetings");
-        addMeetingToCollection(studentID, meetingData, "meetings");
+        addMeetingToCollection(teacherID, meetingData);
+        addMeetingToCollection(studentID, meetingData);
 
         updateTermsStatus(teacherID, date);
     }
 
-    private void addMeetingToCollection(String userID, Map<String, Object> meetingData, String collectionName) {
-        db.collection("users").document(userID).collection(collectionName)
+    private void addMeetingToCollection(String userID, Map<String, Object> meetingData) {
+        db.collection("users").document(userID).collection("meetings")
                 .add(meetingData)
-                .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(context, "Meeting added", Toast.LENGTH_SHORT).show();
-                });
+                .addOnSuccessListener(documentReference -> Toast.makeText(context, "Meeting added", Toast.LENGTH_SHORT).show());
     }
 
     private void updateTermsStatus(String userID, Timestamp date) {
@@ -348,12 +290,10 @@ public class FirebaseManager {
         updateMap.put("price", price);
 
         db.collection("users").document(teacherId).set(updateMap, SetOptions.merge())
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(context, "Cena zaktualizowana pomyślnie", Toast.LENGTH_SHORT).show();
-                })
+                .addOnSuccessListener(aVoid -> Toast.makeText(context, "Price actualized successfully", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> {
                     e.printStackTrace();
-                    Toast.makeText(context, "Błąd podczas aktualizacji ceny", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Error during updating price", Toast.LENGTH_SHORT).show();
                 });
     }
     public void addRate(String teacherId, String studentId, int rate) {
@@ -366,12 +306,10 @@ public class FirebaseManager {
 
         db.collection("users").document(teacherId)
                 .update("ratings." + studentId, rate)
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(context, "Ocena dodana pomyślnie", Toast.LENGTH_SHORT).show();
-                })
+                .addOnSuccessListener(aVoid -> Toast.makeText(context, "Rate added successfully", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> {
                     e.printStackTrace();
-                    Toast.makeText(context, "Błąd podczas aktualizacji oceny", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "\"Error during adding rate", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -399,8 +337,8 @@ public class FirebaseManager {
                             }
                         }
 
-                        int price = documentSnapshot.getLong("price").intValue();
-                        int picture = documentSnapshot.getLong("picture").intValue();
+                        int price = Objects.requireNonNull(documentSnapshot.getLong("price")).intValue();
+                        int picture = Objects.requireNonNull(documentSnapshot.getLong("picture")).intValue();
                         TeacherClass teacher = new TeacherClass(id, email, name, surname, subjects, rates, price, picture);
                         callback.onTeacherReceived(teacher);
                     } else {
@@ -417,19 +355,11 @@ public class FirebaseManager {
 
     public void getImage(String userID, OnSuccessListener<Integer> successListener, OnFailureListener failureListener) {
         db.collection("users").document(userID).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        int picture = documentSnapshot.getLong("picture").intValue();
-                        successListener.onSuccess(picture);
-                    }
+                .addOnSuccessListener(documentSnapshot -> {
+                    int picture = Objects.requireNonNull(documentSnapshot.getLong("picture")).intValue();
+                    successListener.onSuccess(picture);
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        failureListener.onFailure(e);
-                    }
-                });
+                .addOnFailureListener(failureListener);
     }
 
     public void setImage(String userID, int picture) {
@@ -437,12 +367,10 @@ public class FirebaseManager {
         updateMap.put("picture", picture);
 
         db.collection("users").document(userID).set(updateMap, SetOptions.merge())
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(context, "Zdjęcie zaktualizowane pomyślnie", Toast.LENGTH_SHORT).show();
-                })
+                .addOnSuccessListener(aVoid -> Toast.makeText(context, "Image updated successfully", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> {
                     e.printStackTrace();
-                    Toast.makeText(context, "Błąd podczas aktualizacji zdjęcia", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Error during updating image", Toast.LENGTH_SHORT).show();
                 });
     }
 

@@ -16,112 +16,130 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="Table of profile pictures">
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:contentDescription="First row of profile pictures">
 
             <ImageView
                 android:id="@+id/imageChoose1"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/avatar" />
+                android:src="@mipmap/men1"
+                android:contentDescription="Profile picture 1" />
 
             <ImageView
                 android:id="@+id/imageChoose2"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/burn" />
+                android:src="@mipmap/men2"
+                android:contentDescription="Profile picture 2" />
 
             <ImageView
                 android:id="@+id/imageChoose3"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
-                android:layout_weight="0"
-                android:src="@mipmap/cat" />
+                android:layout_weight="1"
+                android:src="@mipmap/women1"
+                android:contentDescription="Profile picture 3" />
 
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:contentDescription="Second row of profile pictures">
 
             <ImageView
                 android:id="@+id/imageChoose4"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/cat3" />
+                android:src="@mipmap/women2"
+                android:contentDescription="Profile picture 4" />
 
             <ImageView
                 android:id="@+id/imageChoose5"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/cat2" />
+                android:src="@mipmap/boy1"
+                android:contentDescription="Profile picture 5" />
 
             <ImageView
                 android:id="@+id/imageChoose6"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
-                android:layout_weight="0"
-                android:src="@mipmap/kid" />
+                android:layout_weight="1"
+                android:src="@mipmap/boy2"
+                android:contentDescription="Profile picture 6" />
 
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:contentDescription="Third row of profile pictures">
 
             <ImageView
                 android:id="@+id/imageChoose7"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/men1" />
+                android:src="@mipmap/girl1"
+                android:contentDescription="Profile picture 7" />
 
             <ImageView
                 android:id="@+id/imageChoose8"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/panda" />
+                android:src="@mipmap/girl2"
+                android:contentDescription="Profile picture 8" />
+
             <ImageView
                 android:id="@+id/imageChoose9"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
-                android:layout_weight="0"
-                android:src="@mipmap/seal" />
+                android:layout_weight="1"
+                android:src="@mipmap/cat"
+                android:contentDescription="Profile picture 9" />
 
         </TableRow>
 
         <TableRow
             android:layout_width="390dp"
-            android:layout_height="130dp">
+            android:layout_height="130dp"
+            android:contentDescription="Last row of profile pictures">
 
             <ImageView
                 android:id="@+id/imageChoose10"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/smile" />
+                android:src="@mipmap/monkey"
+                android:contentDescription="Profile picture 10" />
 
             <ImageView
                 android:id="@+id/imageChoose11"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/woman1" />
+                android:src="@mipmap/seal"
+                android:contentDescription="Profile picture 11" />
 
             <ImageView
                 android:id="@+id/imageChoose12"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
-                android:layout_weight="0"
-                android:src="@mipmap/woman2" />
+                android:layout_weight="1"
+                android:src="@mipmap/annonym"
+                android:contentDescription="Profile picture 12" />
 
         </TableRow>
 
@@ -131,12 +149,14 @@
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="50dp"
-        android:text="Select new Image"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="Select new image:"
+        android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="Select new image label" />
 </androidx.constraintlayout.widget.ConstraintLayout>
