@@ -13,8 +13,9 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="44dp"
-        android:hint="your surname"
+        android:hint="@string/your_surname"
         android:minHeight="48dp"
+        android:textColorHint="#263238"
         app:layout_constraintBottom_toTopOf="@+id/userTypeSwitch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -26,8 +27,9 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="2dp"
-        android:hint="name"
+        android:hint="@string/name"
         android:minHeight="48dp"
+        android:textColorHint="#424242"
         app:layout_constraintBottom_toTopOf="@+id/surname"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -46,7 +48,8 @@
         app:layout_constraintHorizontal_bias="0.348"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.06" />
+        app:layout_constraintVertical_bias="0.06"
+        android:contentDescription="@string/header_register" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/email"
@@ -61,7 +64,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:ignore="ContentDescription" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/password"
@@ -71,7 +75,9 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="2dp"
         android:hint="@string/password"
+        android:inputType="textPassword"
         android:minHeight="48dp"
+        android:textColorHint="#4E342E"
         app:layout_constraintBottom_toTopOf="@+id/name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -89,7 +95,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/surname" />
+        app:layout_constraintTop_toBottomOf="@+id/surname"
+        android:contentDescription="@string/toggle_to_register_as_a_teacher_or_student" />
 
     <Button
         android:id="@+id/btn_register"
@@ -102,7 +109,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userTypeSwitch" />
+        app:layout_constraintTop_toBottomOf="@+id/userTypeSwitch"
+        android:contentDescription="@string/register_button" />
 
     <TextView
         android:id="@+id/go_login"
@@ -117,6 +125,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@string/link_to_go_back_to_login_screen" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

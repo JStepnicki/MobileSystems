@@ -15,7 +15,8 @@
         android:layout_marginEnd="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/select_a_date_for_term_reservation" />
 
     <TextView
         android:id="@+id/headline"
@@ -24,11 +25,12 @@
         android:layout_marginStart="100dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="100dp"
-        android:text="Reserve Term at:"
+        android:text="@string/reserve_term_at"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/headline_select_a_date_for_term_reservation" />
 
     <ListView
         android:id="@+id/availableTermsListView"
@@ -42,5 +44,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarView2"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:contentDescription="@string/list_of_available_terms_for_reservation" />
 </androidx.constraintlayout.widget.ConstraintLayout>

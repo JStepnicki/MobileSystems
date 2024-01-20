@@ -13,12 +13,14 @@
         android:layout_marginStart="64dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="64dp"
-        android:text="Search for tutor"
+        android:text="@string/search_for_tutor"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="Search for tutor header"
+        tools:ignore="HardcodedText" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -30,7 +32,8 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@string/list_of_available_tutors">
 
         <ListView
             android:id="@+id/tutorListView"
@@ -45,10 +48,11 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:text="Subjects"
+        android:text="@string/subjects"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toStartOf="@+id/sortAlphabetically"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@string/filter_tutors_by_subjects" />
 
     <ImageButton
         android:id="@+id/sortAlphabetically"
@@ -56,10 +60,10 @@
         android:layout_height="50dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:contentDescription="sort sortAlphabetically"
+        android:contentDescription="@string/sort_alphabetically"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toStartOf="@+id/sortByPrice"
-        app:srcCompat="@android:drawable/ic_menu_sort_alphabetically" />
+        app:srcCompat="@mipmap/alphabet" />
 
     <ImageButton
         android:id="@+id/sortByRating"
@@ -67,10 +71,10 @@
         android:layout_height="50dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
-        android:contentDescription="sort by rating"
+        android:contentDescription="@string/sort_by_rating"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/btn_star_big_on" />
+        app:srcCompat="@mipmap/rate" />
 
     <ImageButton
         android:id="@+id/sortByPrice"
@@ -78,9 +82,9 @@
         android:layout_height="50dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:contentDescription="sort by price"
+        android:contentDescription="@string/sort_by_price"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toStartOf="@+id/sortByRating"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+        app:srcCompat="@mipmap/money" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
