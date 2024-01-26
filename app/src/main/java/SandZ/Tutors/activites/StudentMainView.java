@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,8 +18,8 @@ import SandZ.Tutors.database_handlers.FirebaseManager;
 
 
 public class StudentMainView extends AppCompatActivity {
-    Button btnLogout, btnMeetings, btnSearch;
-
+    Button btnLogout;
+    ImageButton btnMeetings, btnSearch;
     ImageView profilePic;
     TextView name;
     FirebaseUser user;
@@ -31,8 +32,8 @@ public class StudentMainView extends AppCompatActivity {
         manager = new FirebaseManager(this);
         FirebaseApp.initializeApp(this);
         btnLogout = findViewById(R.id.btn_logout_student);
-        btnMeetings = findViewById(R.id.btn_meetings);
-        btnSearch = findViewById(R.id.go_to_search);
+        btnMeetings = findViewById(R.id.meetingsBtn);
+        btnSearch = findViewById(R.id.searchBtn);
         name = findViewById(R.id.user_name_student);
         user = manager.getCurrentUser();
         profilePic = findViewById(R.id.ProfilePicStudent);

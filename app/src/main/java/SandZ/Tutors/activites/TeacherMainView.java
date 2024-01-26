@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -23,11 +24,10 @@ import SandZ.Tutors.database_handlers.FirebaseManager;
 
 public class TeacherMainView extends AppCompatActivity {
 
-    Button btnLogout, btnTeacherMeetings, btnTerms, btnTeacherSubjects, btnPrice;
+    Button btnLogout;
+    ImageButton btnTeacherMeetings, btnTerms, btnTeacherSubjects, btnPrice;
     TextView credentials;
     FirebaseUser user;
-    private TextView subjectsTextView;
-    private RatingBar ratingBar;
     private ImageView profilePictureView;
     private TeacherClass teacher_object;
     private FirebaseManager manager;
@@ -37,13 +37,11 @@ public class TeacherMainView extends AppCompatActivity {
         setContentView(R.layout.activity_teacher);
         manager = new FirebaseManager(this);
         btnLogout = findViewById(R.id.btn_logout);
-        btnTeacherMeetings = findViewById(R.id.btn_teacher_meetings);
-        btnTerms = findViewById(R.id.teacher_terms);
-        btnTeacherSubjects = findViewById(R.id.teacher_subjects);
-        btnPrice = findViewById(R.id.set_price);
+        btnTeacherMeetings = findViewById(R.id.btnTeacherMeetings);
+        btnTerms = findViewById(R.id.btnTeacherTerms);
+        btnTeacherSubjects = findViewById(R.id.btnSubjects);
+        btnPrice = findViewById(R.id.btnPrice);
         credentials = findViewById(R.id.credentials);
-        ratingBar = findViewById(R.id.ratingBar2);
-        subjectsTextView = findViewById(R.id.subjectList);
         user = manager.getCurrentUser();
         profilePictureView = findViewById(R.id.profilePictureTeacher);
 
@@ -107,26 +105,8 @@ public class TeacherMainView extends AppCompatActivity {
             if (teacher != null) {
                 teacher_object = teacher;
                 credentials.setText(teacher_object.getName() + " " + teacher_object.getSurname());
-                ratingBar.setRating(teacher_object.getRate());
+                profilePictureView.setImageResource(teacher_object.getPicture());
 
-                List<String> subjects = teacher_object.getSubjects();
-                subjectsTextView.setText("My subjects:\n");
-                for (int i = 0; i < subjects.size(); i++) {
-                    subjectsTextView.append(subjects.get(i));
-                    if (i < subjects.size() - 1) {
-                        subjectsTextView.append(", ");
-                    }
-                    if ((i + 1) % 3 == 0 && i < subjects.size() - 1) {
-                        subjectsTextView.append("\n");
-                    }
-                }
-
-                if(teacher.getPicture() == 0) {
-                    profilePictureView.setImageResource(R.drawable.annonym);
-                }
-                else{
-                    profilePictureView.setImageResource(teacher_object.getPicture());
-                }
 
             } else {
                 Intent intent = new Intent(getApplicationContext(), LoginView.class);

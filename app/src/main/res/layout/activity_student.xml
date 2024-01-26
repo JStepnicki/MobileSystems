@@ -20,20 +20,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/btn_meetings"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="110dp"
-        android:layout_marginEnd="110dp"
-        android:layout_marginBottom="64dp"
-        android:text="My Meetings"
-        android:contentDescription="My Meetings Button"
-        app:layout_constraintBottom_toTopOf="@+id/btn_logout_student"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.408"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <TextView
         android:id="@+id/user_name_student"
         android:layout_width="0dp"
@@ -48,19 +34,6 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ProfilePicStudent" />
-
-    <Button
-        android:id="@+id/go_to_search"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="130dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="130dp"
-        android:text="Search for Tutor"
-        android:contentDescription="Search for Tutor Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_name_student" />
 
     <TextView
         android:id="@+id/textView8"
@@ -79,8 +52,8 @@
 
     <ImageView
         android:id="@+id/ProfilePicStudent"
-        android:layout_width="0dp"
-        android:layout_height="152dp"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
         android:layout_marginStart="120dp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="120dp"
@@ -89,5 +62,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/searchBtn"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="72dp"
+        android:contentDescription="@string/my_meetings"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_name_student"
+        app:srcCompat="@mipmap/search" />
+
+    <ImageButton
+        android:id="@+id/meetingsBtn"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="48dp"
+        android:contentDescription="@string/search_for_tutor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_name_student"
+        app:srcCompat="@mipmap/meetings" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
