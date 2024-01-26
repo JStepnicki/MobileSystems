@@ -61,31 +61,31 @@ public class SelectProfilePictureView extends AppCompatActivity {
     private int getImageResource(int imageNumber) {
         switch (imageNumber) {
             case 1:
-                return R.mipmap.men1;
+                return R.drawable.men1;
             case 2:
-                return R.mipmap.men2;
+                return R.drawable.men2;
             case 3:
-                return R.mipmap.women1;
+                return R.drawable.women1;
             case 4:
-                return R.mipmap.women2;
+                return R.drawable.women2;
             case 5:
-                return R.mipmap.boy1;
+                return R.drawable.boy1;
             case 6:
-                return R.mipmap.boy2;
+                return R.drawable.boy2;
             case 7:
-                return R.mipmap.girl1;
+                return R.drawable.girl1;
             case 8:
-                return R.mipmap.girl2;
+                return R.drawable.girl2;
             case 9:
-                return R.mipmap.cat;
+                return R.drawable.cat;
             case 10:
-                return R.mipmap.monkey ;
+                return R.drawable.monkey ;
             case 11:
-                return R.mipmap.seal;
+                return R.drawable.seal;
             case 12:
-                return R.mipmap.annonym;
+                return R.drawable.annonym;
             default:
-                return R.mipmap.annonym;
+                return R.drawable.annonym;
         }
     }
 }

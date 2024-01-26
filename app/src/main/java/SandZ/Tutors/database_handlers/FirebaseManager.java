@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import SandZ.Tutors.R;
 import SandZ.Tutors.activites.LoginView;
 import SandZ.Tutors.activites.RegisterView;
 import SandZ.Tutors.data.classes.Meeting;
@@ -90,7 +91,7 @@ public class FirebaseManager {
                             userData.put("name", name);
                             userData.put("surname", surname);
                             userData.put("userType", isTeacher ? "teacher" : "student");
-                            userData.put("picture", 0);
+                            userData.put("picture", R.drawable.annonym);
 
                             // Store the user in Firestore
                             db.collection("users").document(user.getUid())
@@ -324,13 +325,10 @@ public class FirebaseManager {
                         String name = documentSnapshot.getString("name");
                         String surname = documentSnapshot.getString("surname");
                         List<String> subjects = (List<String>) documentSnapshot.get("subjects");
-
-                        // Retrieve the "rates" field as a map of strings to numbers
                         Map<String, Object> ratesMap = (Map<String, Object>) documentSnapshot.get("ratings");
                         List<Integer> rates = new ArrayList<>();
                         if (ratesMap != null) {
                             for (Object rate : ratesMap.values()) {
-                                // Assuming rates are stored as numbers
                                 if (rate instanceof Number) {
                                     rates.add(((Number) rate).intValue());
                                 }
@@ -342,13 +340,11 @@ public class FirebaseManager {
                         TeacherClass teacher = new TeacherClass(id, email, name, surname, subjects, rates, price, picture);
                         callback.onTeacherReceived(teacher);
                     } else {
-                        // User does not exist or is not a teacher
                         callback.onTeacherReceived(null);
                     }
                 })
                 .addOnFailureListener(e -> {
                     e.printStackTrace();
-                    // Handle failure
                     callback.onTeacherReceived(null);
                 });
     }

@@ -29,7 +29,7 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/men1"
+                android:src="@drawable/men1"
                 android:contentDescription="Profile picture 1" />
 
             <ImageView
@@ -37,7 +37,7 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/men2"
+                android:src="@drawable/men2"
                 android:contentDescription="Profile picture 2" />
 
             <ImageView
@@ -45,7 +45,7 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/women1"
+                android:src="@drawable/women1"
                 android:contentDescription="Profile picture 3" />
 
         </TableRow>
@@ -60,7 +60,7 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/women2"
+                android:src="@drawable/women2"
                 android:contentDescription="Profile picture 4" />
 
             <ImageView
@@ -68,7 +68,7 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/boy1"
+                android:src="@drawable/boy1"
                 android:contentDescription="Profile picture 5" />
 
             <ImageView
@@ -76,7 +76,7 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/boy2"
+                android:src="@drawable/boy2"
                 android:contentDescription="Profile picture 6" />
 
         </TableRow>
@@ -91,7 +91,7 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/girl1"
+                android:src="@drawable/girl1"
                 android:contentDescription="Profile picture 7" />
 
             <ImageView
@@ -99,7 +99,7 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/girl2"
+                android:src="@drawable/girl2"
                 android:contentDescription="Profile picture 8" />
 
             <ImageView
@@ -107,7 +107,7 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/cat"
+                android:src="@drawable/cat"
                 android:contentDescription="Profile picture 9" />
 
         </TableRow>
@@ -122,7 +122,7 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/monkey"
+                android:src="@drawable/monkey"
                 android:contentDescription="Profile picture 10" />
 
             <ImageView
@@ -130,7 +130,7 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/seal"
+                android:src="@drawable/seal"
                 android:contentDescription="Profile picture 11" />
 
             <ImageView
@@ -138,7 +138,7 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_weight="1"
-                android:src="@mipmap/annonym"
+                android:src="@drawable/annonym"
                 android:contentDescription="Profile picture 12" />
 
         </TableRow>

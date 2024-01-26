@@ -122,7 +122,7 @@ public class TeacherMainView extends AppCompatActivity {
                 }
 
                 if(teacher.getPicture() == 0) {
-                    profilePictureView.setImageResource(R.mipmap.annonym);
+                    profilePictureView.setImageResource(R.drawable.annonym);
                 }
                 else{
                     profilePictureView.setImageResource(teacher_object.getPicture());

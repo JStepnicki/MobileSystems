@@ -40,8 +40,7 @@ public class TeacherAccountView extends AppCompatActivity {
         nameText.setText(teacher.getName());
         surnameText.setText(teacher.getSurname());
         ratingBar.setRating(teacher.getRate());
-
-        profilePicture.setImageResource(R.mipmap.annonym);
+        profilePicture.setImageResource(teacher.getPicture());
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {

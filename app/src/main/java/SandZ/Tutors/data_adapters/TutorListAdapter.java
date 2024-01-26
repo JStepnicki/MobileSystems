@@ -37,12 +37,8 @@ public class TutorListAdapter extends ArrayAdapter<TeacherClass> {
         TextView rateView = convertView.findViewById(R.id.studentName);
 
         if (teacher != null) {
-            if(teacher.getPicture()==0){
-                imageView.setImageResource(R.mipmap.annonym);
-            }
-            else{
-                imageView.setImageResource(teacher.getPicture());
-            }
+            int image = teacher.getPicture();
+            imageView.setImageResource(image);
             nameView.setText(teacher.getName());
             surnameView.setText(teacher.getSurname());
             priceView.setText(teacher.getStringPrice() + "zł/h");
